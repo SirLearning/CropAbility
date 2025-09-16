@@ -1,0 +1,21 @@
+        <!-- PyTorch Java API - 使用DJL引擎 -->
+        <dependency>
+            <groupId>ai.djl.pytorch</groupId>
+            <artifactId>pytorch-engine</artifactId>
+            <version>0.21.0</version>
+        </dependency>
+        
+        <!-- PyTorch原生CPU库 -->
+        <dependency>
+            <groupId>ai.djl.pytorch</groupId>
+            <artifactId>pytorch-native-cpu</artifactId>
+            <version>1.13.1</version>
+            <classifier>linux-x86_64</classifier>
+        </dependency>
+        
+        <!-- DJL API -->
+        <dependency>
+            <groupId>ai.djl</groupId>
+            <artifactId>api</artifactId>
+            <version>0.21.0</version>
+        </dependency>

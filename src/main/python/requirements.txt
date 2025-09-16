@@ -1,0 +1,17 @@
+# PGL Python项目依赖配置
+
+# 核心依赖
+torch>=1.13.0
+triton>=2.0.0
+
+# 开发依赖
+numpy>=1.21.0
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=22.0.0
+flake8>=5.0.0
+mypy>=0.991
+
+# 可选依赖
+matplotlib>=3.5.0  # 用于可视化性能结果
+tensorboard>=2.8.0  # 用于日志记录
