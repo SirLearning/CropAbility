@@ -1,0 +1,191 @@
+/data/dazheng/lib/jvm/jdk-17/bin/java -agentlib:jdwp=transport=dt_socket,address=127.0.0.1:46341,suspend=y,server=n -javaagent:/data/dazheng/.cache/JetBrains/RemoteDev/dist/b38067f18044c_ideaIU-252.26199.7/plugins/java/lib/rt/debugger-agent.jar=file:///tmp/capture6519322117182818758.props -Dkotlinx.coroutines.debug.enable.creation.stack.trace=false -Ddebugger.agent.enable.coroutines=true -Dkotlinx.coroutines.debug.enable.flows.stack.trace=true -Dkotlinx.coroutines.debug.enable.mutable.state.flows.stack.trace=true -Dfile.encoding=UTF-8 -classpath /data/dazheng/git/TIGER_gpu/target/classes:/data/dazheng/.m2/repository/colt/colt/1.2.0/colt-1.2.0.jar:/data/dazheng/.m2/repository/concurrent/concurrent/1.3.4/concurrent-1.3.4.jar:/data/dazheng/.m2/repository/commons-cli/commons-cli/1.5.0/commons-cli-1.5.0.jar:/data/dazheng/.m2/repository/commons-io/commons-io/2.13.0/commons-io-2.13.0.jar:/data/dazheng/.m2/repository/org/apache/commons/commons-lang3/3.13.0/commons-lang3-3.13.0.jar:/data/dazheng/.m2/repository/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar:/data/dazheng/.m2/repository/it/unimi/dsi/fastutil/8.5.12/fastutil-8.5.12.jar:/data/dazheng/.m2/repository/com/google/guava/guava/32.0.1-jre/guava-32.0.1-jre.jar:/data/dazheng/.m2/repository/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar:/data/dazheng/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/data/dazheng/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/data/dazheng/.m2/repository/org/checkerframework/checker-qual/3.33.0/checker-qual-3.33.0.jar:/data/dazheng/.m2/repository/com/google/errorprone/error_prone_annotations/2.18.0/error_prone_annotations-2.18.0.jar:/data/dazheng/.m2/repository/com/google/j2objc/j2objc-annotations/2.8/j2objc-annotations-2.8.jar:/data/dazheng/.m2/repository/com/itextpdf/itextpdf/5.5.11/itextpdf-5.5.11.jar:/data/dazheng/.m2/repository/com/koloboke/koloboke-api-jdk8/1.0.0/koloboke-api-jdk8-1.0.0.jar:/data/dazheng/.m2/repository/com/koloboke/koloboke-impl-common-jdk8/1.0.0/koloboke-impl-common-jdk8-1.0.0.jar:/data/dazheng/.m2/repository/com/koloboke/koloboke-impl-jdk8/1.0.0/koloboke-impl-jdk8-1.0.0.jar:/data/dazheng/.m2/repository/com/github/jbytecode/RCaller/2.7/RCaller-2.7.jar:/data/dazheng/.m2/repository/commons-lang/commons-lang/2.6/commons-lang-2.6.jar:/data/dazheng/.m2/repository/org/roaringbitmap/RoaringBitmap/1.0.0/RoaringBitmap-1.0.0.jar:/data/dazheng/.m2/repository/net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3.jar:/data/dazheng/.m2/repository/org/jocl/jocl/2.0.4/jocl-2.0.4.jar:/data/dazheng/.m2/repository/com/aparapi/aparapi/3.0.0/aparapi-3.0.0.jar:/data/dazheng/.m2/repository/com/aparapi/aparapi-jni/1.4.3/aparapi-jni-1.4.3.jar:/data/dazheng/.m2/repository/org/apache/bcel/bcel/6.5.0/bcel-6.5.0.jar:/data/dazheng/.m2/repository/org/scala-lang/scala-library/2.13.6/scala-library-2.13.6.jar:/data/dazheng/.m2/repository/org/jcuda/jcuda/11.8.0/jcuda-11.8.0.jar:/data/dazheng/.m2/repository/org/jcuda/jcuda-natives/11.8.0/jcuda-natives-11.8.0-linux-x86_64.jar:/data/dazheng/.m2/repository/org/jcuda/jcublas/11.8.0/jcublas-11.8.0.jar:/data/dazheng/.m2/repository/org/jcuda/jcublas-natives/11.8.0/jcublas-natives-11.8.0-linux-x86_64.jar:/data/dazheng/.m2/repository/org/slf4j/slf4j-simple/2.0.9/slf4j-simple-2.0.9.jar:/data/dazheng/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/data/dazheng/.m2/repository/ai/djl/pytorch/pytorch-jni/2.1.1-0.27.0/pytorch-jni-2.1.1-0.27.0.jar:/data/dazheng/.m2/repository/ai/djl/pytorch/pytorch-engine/0.33.0/pytorch-engine-0.33.0.jar:/data/dazheng/.m2/repository/ai/djl/api/0.33.0/api-0.33.0.jar:/data/dazheng/.m2/repository/com/google/code/gson/gson/2.13.1/gson-2.13.1.jar:/data/dazheng/.m2/repository/net/java/dev/jna/jna/5.14.0/jna-5.14.0.jar:/data/dazheng/.m2/repository/org/apache/commons/commons-compress/1.27.1/commons-compress-1.27.1.jar:/data/dazheng/.m2/repository/commons-codec/commons-codec/1.17.1/commons-codec-1.17.1.jar:/data/dazheng/.m2/repository/ai/djl/pytorch/pytorch-native-cu124/2.5.1/pytorch-native-cu124-2.5.1.jar:/data/dazheng/.cache/JetBrains/RemoteDev/dist/b38067f18044c_ideaIU-252.26199.7/lib/idea_rt.jar pgl.app.fastCall2.ScanGenotypeGPU
+Connected to the target VM, address: '127.0.0.1:46341', transport: 'socket'
+Reading reference genome from /data/dazheng/01projects/vmap4/00data/03ref/05chr1/chr1.fa.gz
+Reading Fasta file...
+1 sequences in the file /data/dazheng/01projects/vmap4/00data/03ref/05chr1/chr1.fa.gz
+Reading reference genome took 19.45s
+Created TaxaBamMap from/data/dazheng/01projects/vmap4/00data/05taxaBamMap/chr1.taxaBamMap.txt
+Taxa number:	91
+Bam file number in TaxaBamMap:	91
+Sep 23, 2025 1:45:33 PM pgl.infra.gpu.TorchIntegration <init>
+INFO: Loading TorchScript model: /data/dazheng/git/TIGER_gpu/src/main/torchscript/gtp_gpu_model.pt
+[main] INFO ai.djl.util.Platform - Found placeholder platform from: cu120-linux-x86_64:2.5.1
+[main] WARN ai.djl.pytorch.jni.LibUtils - No matching cuda flavor for linux-x86_64 found: cu120.
+[main] INFO ai.djl.pytorch.engine.PtEngine - PyTorch graph executor optimizer is enabled, this may impact your inference latency and throughput. See: https://docs.djl.ai/master/docs/development/inference_performance_optimization.html#graph-executor-optimization
+[main] INFO ai.djl.pytorch.engine.PtEngine - Number of inter-op threads is 48
+[main] INFO ai.djl.pytorch.engine.PtEngine - Number of intra-op threads is 48
+Sep 23, 2025 1:45:39 PM pgl.infra.gpu.TorchIntegration <init>
+INFO: Model loaded successfully
+java.util.concurrent.ExecutionException: java.lang.RuntimeException: java.lang.RuntimeException: Genotyping inference failed: ai.djl.engine.EngineException: The following operation failed in the TorchScript interpreter.
+Traceback of TorchScript, serialized code (most recent call last):
+  File "code/__torch__.py", line 11, in forward
+    X3: Tensor) -> Tensor:
+    x = torch.stack([X1, X2, X3], 1)
+    x0 = torch.to(x, dtype=6, layout=0, device=torch.device("cuda"))
+         ~~~~~~~~ <--- HERE
+    X = torch.to(x0, 6)
+    X0 = torch.to(X, 6)
+
+Traceback of TorchScript, original code (most recent call last):
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp.py(41): _ensure_float_tensor
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp.py(143): gtp_gpu
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(11): forward
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1763): _slow_forward
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1784): _call_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1773): _wrapped_call_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(1282): trace_module
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(696): _trace_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(1002): trace
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(21): main
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(30): <module>
+RuntimeError: PyTorch is not linked with support for cuda devices
+
+	at java.base/java.util.concurrent.ForkJoinTask.reportExecutionException(ForkJoinTask.java:605)
+	at java.base/java.util.concurrent.ForkJoinTask.get(ForkJoinTask.java:981)
+	at pgl.app.fastCall2.ScanGenotypeGPU.mkFinalVCFFromIndiCounts(ScanGenotypeGPU.java:377)
+	at pgl.app.fastCall2.ScanGenotypeGPU.<init>(ScanGenotypeGPU.java:164)
+	at pgl.app.fastCall2.ScanGenotypeGPU.main(ScanGenotypeGPU.java:117)
+Caused by: java.lang.RuntimeException: java.lang.RuntimeException: Genotyping inference failed: ai.djl.engine.EngineException: The following operation failed in the TorchScript interpreter.
+Traceback of TorchScript, serialized code (most recent call last):
+  File "code/__torch__.py", line 11, in forward
+    X3: Tensor) -> Tensor:
+    x = torch.stack([X1, X2, X3], 1)
+    x0 = torch.to(x, dtype=6, layout=0, device=torch.device("cuda"))
+         ~~~~~~~~ <--- HERE
+    X = torch.to(x0, 6)
+    X0 = torch.to(X, 6)
+
+Traceback of TorchScript, original code (most recent call last):
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp.py(41): _ensure_float_tensor
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp.py(143): gtp_gpu
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(11): forward
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1763): _slow_forward
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1784): _call_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1773): _wrapped_call_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(1282): trace_module
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(696): _trace_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(1002): trace
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(21): main
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(30): <module>
+RuntimeError: PyTorch is not linked with support for cuda devices
+
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:480)
+	at java.base/java.util.concurrent.ForkJoinTask.getThrowableException(ForkJoinTask.java:562)
+	at java.base/java.util.concurrent.ForkJoinTask.reportExecutionException(ForkJoinTask.java:604)
+	... 4 more
+Caused by: java.lang.RuntimeException: Genotyping inference failed: ai.djl.engine.EngineException: The following operation failed in the TorchScript interpreter.
+Traceback of TorchScript, serialized code (most recent call last):
+  File "code/__torch__.py", line 11, in forward
+    X3: Tensor) -> Tensor:
+    x = torch.stack([X1, X2, X3], 1)
+    x0 = torch.to(x, dtype=6, layout=0, device=torch.device("cuda"))
+         ~~~~~~~~ <--- HERE
+    X = torch.to(x0, 6)
+    X0 = torch.to(X, 6)
+
+Traceback of TorchScript, original code (most recent call last):
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp.py(41): _ensure_float_tensor
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp.py(143): gtp_gpu
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(11): forward
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1763): _slow_forward
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1784): _call_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1773): _wrapped_call_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(1282): trace_module
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(696): _trace_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(1002): trace
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(21): main
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(30): <module>
+RuntimeError: PyTorch is not linked with support for cuda devices
+
+	at pgl.infra.gpu.TorchIntegration.genotyping(TorchIntegration.java:106)
+	at pgl.app.fastCall2.ScanGenotypeGPU.getInfoAndGenotypes(ScanGenotypeGPU.java:732)
+	at pgl.app.fastCall2.ScanGenotypeGPU.lambda$mkFinalVCFFromIndiCounts$0(ScanGenotypeGPU.java:375)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.ForEachOps$ForEachTask.compute(ForEachOps.java:290)
+	at java.base/java.util.concurrent.CountedCompleter.exec(CountedCompleter.java:754)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec$$$capture(ForkJoinTask.java:373)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java)
+	at java.base/java.util.concurrent.ForkJoinTask.invoke(ForkJoinTask.java:686)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateParallel(ForEachOps.java:159)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateParallel(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:233)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:765)
+	at pgl.app.fastCall2.ScanGenotypeGPU.lambda$mkFinalVCFFromIndiCounts$1(ScanGenotypeGPU.java:356)
+	at java.base/java.util.concurrent.ForkJoinTask$AdaptedRunnableAction.exec(ForkJoinTask.java:1375)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec$$$capture(ForkJoinTask.java:373)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1182)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1655)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1622)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165)
+Caused by: ai.djl.translate.TranslateException: ai.djl.engine.EngineException: The following operation failed in the TorchScript interpreter.
+Traceback of TorchScript, serialized code (most recent call last):
+  File "code/__torch__.py", line 11, in forward
+    X3: Tensor) -> Tensor:
+    x = torch.stack([X1, X2, X3], 1)
+    x0 = torch.to(x, dtype=6, layout=0, device=torch.device("cuda"))
+         ~~~~~~~~ <--- HERE
+    X = torch.to(x0, 6)
+    X0 = torch.to(X, 6)
+
+Traceback of TorchScript, original code (most recent call last):
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp.py(41): _ensure_float_tensor
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp.py(143): gtp_gpu
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(11): forward
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1763): _slow_forward
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1784): _call_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1773): _wrapped_call_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(1282): trace_module
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(696): _trace_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(1002): trace
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(21): main
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(30): <module>
+RuntimeError: PyTorch is not linked with support for cuda devices
+
+	at ai.djl.inference.Predictor.batchPredict(Predictor.java:200)
+	at ai.djl.inference.Predictor.predict(Predictor.java:133)
+	at pgl.infra.gpu.TorchIntegration.genotyping(TorchIntegration.java:86)
+	... 23 more
+Caused by: ai.djl.engine.EngineException: The following operation failed in the TorchScript interpreter.
+Traceback of TorchScript, serialized code (most recent call last):
+  File "code/__torch__.py", line 11, in forward
+    X3: Tensor) -> Tensor:
+    x = torch.stack([X1, X2, X3], 1)
+    x0 = torch.to(x, dtype=6, layout=0, device=torch.device("cuda"))
+         ~~~~~~~~ <--- HERE
+    X = torch.to(x0, 6)
+    X0 = torch.to(X, 6)
+
+Traceback of TorchScript, original code (most recent call last):
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp.py(41): _ensure_float_tensor
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp.py(143): gtp_gpu
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(11): forward
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1763): _slow_forward
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1784): _call_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/nn/modules/module.py(1773): _wrapped_call_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(1282): trace_module
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(696): _trace_impl
+/data/dazheng/miniconda3/envs/gpu/lib/python3.13/site-packages/torch/jit/_trace.py(1002): trace
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(21): main
+/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp_torchscript_export.py(30): <module>
+RuntimeError: PyTorch is not linked with support for cuda devices
+
+	at ai.djl.pytorch.jni.PyTorchLibrary.moduleRunMethod(Native Method)
+	at ai.djl.pytorch.jni.IValueUtils.forward(IValueUtils.java:57)
+	at ai.djl.pytorch.engine.PtSymbolBlock.forwardInternal(PtSymbolBlock.java:146)
+	at ai.djl.nn.AbstractBaseBlock.forward(AbstractBaseBlock.java:79)
+	at ai.djl.nn.Block.forward(Block.java:129)
+	at ai.djl.inference.Predictor.predictInternal(Predictor.java:150)
+	at ai.djl.inference.Predictor.batchPredict(Predictor.java:175)
+	... 25 more
+Disconnected from the target VM, address: '127.0.0.1:46341', transport: 'socket'
+
+Process finished with exit code 1
+

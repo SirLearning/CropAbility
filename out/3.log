@@ -1,0 +1,22 @@
+Size (N)        | CPU Time (s)    | GPU Time (s)    | Speedup        
+----------------------------------------------------------------------
+1000            | 0.0090          | 0.1066          | 0.08           x
+10000           | 0.0042          | 0.0012          | 3.54           x
+100000          | 0.0137          | 0.0029          | 4.78           x
+1000000         | 0.0583          | 0.0042          | 13.72          x
+10000000        | 0.5069          | 0.0194          | 26.11          x
+100000000       | 4.7884          | 0.2013          | 23.78          x
+200000000       | 9.2839          | 0.4181          | 22.21          x
+Traceback (most recent call last):
+  File "/data/dazheng/git/CropAbility/src/main/python/benchmark_plot.py", line 112, in <module>
+    benchmark_sizes()
+    ~~~~~~~~~~~~~~~^^
+  File "/data/dazheng/git/CropAbility/src/main/python/benchmark_plot.py", line 50, in benchmark_sizes
+    _ = gtp_gpu(X1_cuda, X2_cuda, X3_cuda, prefer_cuda=True)
+  File "/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp.py", line 165, in gtp_gpu
+    best_idx, best_vals, margin = select_genotype_from_likelihoods(Y)
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/data/dazheng/git/CropAbility/src/main/python/pgl/ops/gtp.py", line 62, in select_genotype_from_likelihoods
+    sorted_vals, _ = torch.sort(Y, dim=1)
+                     ~~~~~~~~~~^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 22.35 GiB. GPU 0 has a total capacity of 79.18 GiB of which 11.21 GiB is free. Including non-PyTorch memory, this process has 67.96 GiB memory in use. Of the allocated memory 63.33 GiB is allocated by PyTorch, and 4.11 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
