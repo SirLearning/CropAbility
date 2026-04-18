@@ -1,0 +1,118 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cropability"
+version = "0.1.0"
+description = "植物基因组高性能GPU计算框架 — Plant Genomics HPC Framework"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "CropAbility Team", email = "cropability@example.com" }
+]
+keywords = ["genomics", "gpu", "triton", "hpc", "plant", "bioinformatics"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: POSIX :: Linux",
+]
+requires-python = ">=3.9"
+
+dependencies = [
+    "torch>=2.1.0",
+    "numpy>=1.24.0",
+    "pyyaml>=6.0",
+    "tomli>=2.0.0; python_version < '3.11'",
+]
+
+[project.optional-dependencies]
+gpu = [
+    "triton>=2.1.0",
+]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "pytest-xdist>=3.3",
+    "ruff>=0.1.0",
+    "mypy>=1.5",
+    "pre-commit>=3.4",
+]
+io = [
+    "pysam>=0.21.0",      # BAM/CRAM support (optional)
+    "biopython>=1.81",    # extended format support (optional)
+]
+viz = [
+    "matplotlib>=3.7",
+    "seaborn>=0.12",
+    "plotly>=5.15",
+]
+all = [
+    "cropability[gpu,dev,viz]",
+]
+
+[project.scripts]
+cropability = "cropability.cli.main:main"
+
+[project.urls]
+Homepage = "https://github.com/example/CropAbility"
+Repository = "https://github.com/example/CropAbility"
+Issues = "https://github.com/example/CropAbility/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["cropability*"]
+
+[tool.setuptools.package-data]
+cropability = ["py.typed"]
+
+# ---------------------------------------------------------------------------
+# Ruff (linter + formatter)
+# ---------------------------------------------------------------------------
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+ignore = ["E501", "B008", "SIM108"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["cropability"]
+
+# ---------------------------------------------------------------------------
+# Pytest
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+markers = [
+    "gpu: Tests requiring CUDA GPU",
+    "slow: Long-running tests",
+]
+
+# ---------------------------------------------------------------------------
+# Coverage
+# ---------------------------------------------------------------------------
+[tool.coverage.run]
+source = ["cropability"]
+omit = ["*/tests/*", "*/cli/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+
+# ---------------------------------------------------------------------------
+# Mypy
+# ---------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
