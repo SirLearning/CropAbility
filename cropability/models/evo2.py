@@ -88,14 +88,23 @@ def run_evo2(
     model_device = first_param.device if first_param is not None else torch.device("cpu")
     inputs = {k: v.to(model_device) for k, v in inputs.items()}
 
-    with torch.no_grad():
-        out = model.generate(
-            **inputs,
-            max_new_tokens=max_new_tokens,
-            do_sample=temperature > 0,
-            temperature=temperature,
-            top_p=top_p,
-            pad_token_id=tokenizer.eos_token_id,
+    generate_kwargs = {
+        **inputs,
+        "max_new_tokens": max_new_tokens,
+        "pad_token_id": tokenizer.eos_token_id,
+    }
+    if temperature > 0:
+        generate_kwargs.update(
+            {
+                "do_sample": True,
+                "temperature": temperature,
+                "top_p": top_p,
+            }
         )
+    else:
+        generate_kwargs["do_sample"] = False
+
+    with torch.no_grad():
+        out = model.generate(**generate_kwargs)
 
     return tokenizer.decode(out[0], skip_special_tokens=True)
