@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import Optional
 
 
 DEFAULT_EVO2_REPO = "arcinstitute/evo2_7b"
@@ -12,7 +11,7 @@ DEFAULT_EVO2_REPO = "arcinstitute/evo2_7b"
 
 def check_model_downloadable(
     repo_id: str = DEFAULT_EVO2_REPO,
-    token: Optional[str] = None,
+    token: str | None = None,
 ) -> tuple[bool, str]:
     """Check whether model metadata is accessible on Hugging Face."""
     try:
@@ -30,8 +29,8 @@ def check_model_downloadable(
 
 def download_model(
     repo_id: str = DEFAULT_EVO2_REPO,
-    local_dir: Optional[str] = None,
-    token: Optional[str] = None,
+    local_dir: str | None = None,
+    token: str | None = None,
 ) -> Path:
     """Download (or reuse cached) Evo2 model files."""
     try:
@@ -55,7 +54,7 @@ def run_evo2(
     max_new_tokens: int = 64,
     temperature: float = 0.8,
     top_p: float = 0.95,
-    token: Optional[str] = None,
+    token: str | None = None,
     local_files_only: bool = False,
 ) -> str:
     """Run Evo2 text generation."""

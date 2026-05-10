@@ -207,6 +207,7 @@ def cmd_evo2(args: argparse.Namespace) -> int:
     token = args.token
     repo_id = args.repo_id
 
+    # Default action: run accessibility check when no explicit download/run action is provided.
     if args.check or (args.download_dir is None and args.prompt is None):
         ok, msg = check_model_downloadable(repo_id=repo_id, token=token)
         print(msg)
