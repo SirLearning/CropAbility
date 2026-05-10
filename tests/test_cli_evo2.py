@@ -1,4 +1,4 @@
-"""evo2 CLI 测试。"""
+"""Unit tests for evo2 CLI commands."""
 
 from __future__ import annotations
 

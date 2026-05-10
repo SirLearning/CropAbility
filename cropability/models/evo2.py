@@ -84,11 +84,8 @@ def run_evo2(
     model.eval()
 
     inputs = tokenizer(prompt, return_tensors="pt")
-    try:
-        first_param = next(model.parameters())
-        model_device = first_param.device
-    except StopIteration:
-        model_device = torch.device("cpu")
+    first_param = next(model.parameters(), None)
+    model_device = first_param.device if first_param is not None else torch.device("cpu")
     inputs = {k: v.to(model_device) for k, v in inputs.items()}
 
     with torch.no_grad():
