@@ -48,13 +48,17 @@ io = [
     "pysam>=0.21.0",      # BAM/CRAM support (optional)
     "biopython>=1.81",    # extended format support (optional)
 ]
+llm = [
+    "huggingface-hub>=0.30.2",
+    "transformers>=4.51.3",
+]
 viz = [
     "matplotlib>=3.7",
     "seaborn>=0.12",
     "plotly>=5.15",
 ]
 all = [
-    "cropability[gpu,dev,viz]",
+    "cropability[gpu,dev,viz,llm]",
 ]
 
 [project.scripts]

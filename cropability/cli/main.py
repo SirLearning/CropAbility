@@ -10,6 +10,7 @@ CropAbility 命令行工具
   gwas      — 全基因组关联分析
   align     — 批量序列比对
   export    — 导出 TorchScript 模型
+  evo2      — 检查/下载/运行 Evo2 7B
   benchmark — GPU 性能基准测试
 """
 
@@ -199,6 +200,46 @@ def cmd_ld(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_evo2(args: argparse.Namespace) -> int:
+    """检查、下载或运行 Evo2 7B。"""
+    from cropability.models.evo2 import check_model_downloadable, download_model, run_evo2
+
+    token = args.token
+    repo_id = args.repo_id
+
+    if args.check or (args.download_dir is None and args.prompt is None):
+        ok, msg = check_model_downloadable(repo_id=repo_id, token=token)
+        print(msg)
+        if not ok:
+            return 1
+
+    if args.download_dir is not None:
+        try:
+            path = download_model(repo_id=repo_id, local_dir=args.download_dir, token=token)
+            print(f"model downloaded to: {path}")
+        except Exception as exc:
+            print(f"download failed: {exc}")
+            return 1
+
+    if args.prompt is not None:
+        try:
+            result = run_evo2(
+                prompt=args.prompt,
+                repo_id=repo_id,
+                max_new_tokens=args.max_new_tokens,
+                temperature=args.temperature,
+                top_p=args.top_p,
+                token=token,
+                local_files_only=args.local_files_only,
+            )
+            print(result)
+        except Exception as exc:
+            print(f"run failed: {exc}")
+            return 1
+
+    return 0
+
+
 # ---------------------------------------------------------------------------
 # 主解析器
 # ---------------------------------------------------------------------------
@@ -243,6 +284,42 @@ def build_parser() -> argparse.ArgumentParser:
     ld.add_argument("--n-samples", type=int, default=200)
     ld.add_argument("--n-snps", type=int, default=500)
 
+    # evo2
+    evo2 = sub.add_parser("evo2", help="检查/下载/运行 Evo2 7B")
+    evo2.add_argument(
+        "--repo-id",
+        default="arcinstitute/evo2_7b",
+        help="Hugging Face 模型仓库 ID",
+    )
+    evo2.add_argument(
+        "--token",
+        default=None,
+        help="Hugging Face token（也可通过 HF_TOKEN 环境变量提供）",
+    )
+    evo2.add_argument(
+        "--check",
+        action="store_true",
+        help="仅检查模型是否可访问",
+    )
+    evo2.add_argument(
+        "--download-dir",
+        default=None,
+        help="下载目录（设置后会触发下载）",
+    )
+    evo2.add_argument(
+        "--prompt",
+        default=None,
+        help="用于运行推理的输入文本",
+    )
+    evo2.add_argument("--max-new-tokens", type=int, default=64)
+    evo2.add_argument("--temperature", type=float, default=0.8)
+    evo2.add_argument("--top-p", type=float, default=0.95)
+    evo2.add_argument(
+        "--local-files-only",
+        action="store_true",
+        help="仅使用本地缓存，不访问网络",
+    )
+
     return parser
 
 
@@ -252,6 +329,7 @@ _COMMANDS = {
     "snp": cmd_snp,
     "export": cmd_export,
     "ld": cmd_ld,
+    "evo2": cmd_evo2,
 }
 
 

@@ -79,6 +79,13 @@ cropability ld --n-samples 500 --n-snps 1000
 # 导出 TorchScript 模型（供 Java 调用）
 cropability export --model add --output model.pt
 cropability export --model embedding --output embed.pt
+
+# Evo2 7B：检查是否可访问并下载
+cropability evo2 --check
+cropability evo2 --download-dir ./models/evo2_7b
+
+# Evo2 7B：运行推理
+cropability evo2 --prompt "ACGTACGTACGT"
 ```
 
 ### Python API

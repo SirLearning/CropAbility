@@ -6,5 +6,20 @@ from cropability.models.torchscript import (
     export_model,
     load_model,
 )
+from cropability.models.evo2 import (
+    DEFAULT_EVO2_REPO,
+    check_model_downloadable,
+    download_model,
+    run_evo2,
+)
 
-__all__ = ["AddModule", "GenomicEmbedding", "export_model", "load_model"]
+__all__ = [
+    "AddModule",
+    "GenomicEmbedding",
+    "export_model",
+    "load_model",
+    "DEFAULT_EVO2_REPO",
+    "check_model_downloadable",
+    "download_model",
+    "run_evo2",
+]
