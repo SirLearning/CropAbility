@@ -1,4 +1,4 @@
-"""Evo2 模型下载检查、下载与推理运行。"""
+"""Evo2 model availability check, download, and inference execution."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ def check_model_downloadable(
     repo_id: str = DEFAULT_EVO2_REPO,
     token: Optional[str] = None,
 ) -> tuple[bool, str]:
-    """检查 Hugging Face 上的模型元数据是否可访问。"""
+    """Check whether model metadata is accessible on Hugging Face."""
     try:
         from huggingface_hub import HfApi
     except ImportError:
@@ -33,7 +33,7 @@ def download_model(
     local_dir: Optional[str] = None,
     token: Optional[str] = None,
 ) -> Path:
-    """下载（或复用缓存）Evo2 模型文件。"""
+    """Download (or reuse cached) Evo2 model files."""
     try:
         from huggingface_hub import snapshot_download
     except ImportError as exc:
@@ -58,7 +58,7 @@ def run_evo2(
     token: Optional[str] = None,
     local_files_only: bool = False,
 ) -> str:
-    """运行 Evo2 文本生成。"""
+    """Run Evo2 text generation."""
     try:
         import torch
         from transformers import AutoModelForCausalLM, AutoTokenizer

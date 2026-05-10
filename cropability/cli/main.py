@@ -10,7 +10,7 @@ CropAbility 命令行工具
   gwas      — 全基因组关联分析
   align     — 批量序列比对
   export    — 导出 TorchScript 模型
-  evo2      — 检查/下载/运行 Evo2 7B
+  evo2      — Check/download/run Evo2 7B
   benchmark — GPU 性能基准测试
 """
 
@@ -201,7 +201,7 @@ def cmd_ld(args: argparse.Namespace) -> int:
 
 
 def cmd_evo2(args: argparse.Namespace) -> int:
-    """检查、下载或运行 Evo2 7B。"""
+    """Check, download, or run Evo2 7B."""
     from cropability.models.evo2 import check_model_downloadable, download_model, run_evo2
 
     token = args.token
@@ -285,31 +285,31 @@ def build_parser() -> argparse.ArgumentParser:
     ld.add_argument("--n-snps", type=int, default=500)
 
     # evo2
-    evo2 = sub.add_parser("evo2", help="检查/下载/运行 Evo2 7B")
+    evo2 = sub.add_parser("evo2", help="Check/download/run Evo2 7B")
     evo2.add_argument(
         "--repo-id",
         default="arcinstitute/evo2_7b",
-        help="Hugging Face 模型仓库 ID",
+        help="Hugging Face model repository ID",
     )
     evo2.add_argument(
         "--token",
         default=None,
-        help="Hugging Face token（也可通过 HF_TOKEN 环境变量提供）",
+        help="Hugging Face token (or set HF_TOKEN environment variable)",
     )
     evo2.add_argument(
         "--check",
         action="store_true",
-        help="仅检查模型是否可访问",
+        help="Only check whether the model is accessible",
     )
     evo2.add_argument(
         "--download-dir",
         default=None,
-        help="下载目录（设置后会触发下载）",
+        help="Download directory (triggers download when set)",
     )
     evo2.add_argument(
         "--prompt",
         default=None,
-        help="用于运行推理的输入文本",
+        help="Input prompt for inference",
     )
     evo2.add_argument("--max-new-tokens", type=int, default=64)
     evo2.add_argument("--temperature", type=float, default=0.8)
@@ -317,7 +317,7 @@ def build_parser() -> argparse.ArgumentParser:
     evo2.add_argument(
         "--local-files-only",
         action="store_true",
-        help="仅使用本地缓存，不访问网络",
+        help="Use only local cache without network access",
     )
 
     return parser
