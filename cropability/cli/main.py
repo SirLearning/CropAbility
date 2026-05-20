@@ -9,7 +9,7 @@ CropAbility 命令行工具
   ld        — 计算连锁不平衡矩阵
   gwas      — 全基因组关联分析
   align     — 批量序列比对
-  pileup    — 运行 samtools mpileup
+  pileup    — 运行原生 mpileup（CropAbility 内置）
   call-variants — 运行 NGS 变异检测流程
   export    — 导出 TorchScript 模型
   benchmark — GPU 性能基准测试
@@ -202,7 +202,7 @@ def cmd_ld(args: argparse.Namespace) -> int:
 
 
 def cmd_pileup(args: argparse.Namespace) -> int:
-    """运行 samtools mpileup 并输出 pileup 文本。"""
+    """运行原生 mpileup 并输出位点汇总文本。"""
     from cropability.genomics.pipeline import QCThresholds, VariantPipeline
 
     qc = QCThresholds(
@@ -221,13 +221,13 @@ def cmd_pileup(args: argparse.Namespace) -> int:
         regions=args.region,
         dry_run=args.dry_run,
     )
-    print("mpileup completed")
+    print("native pileup completed")
     print(f"  output: {report['mpileup']['output']}")
     return 0
 
 
 def cmd_call_variants(args: argparse.Namespace) -> int:
-    """运行变异检测流程（mpileup / fastcall3 / hybrid）。"""
+    """运行原生变异检测流程（mpileup / fastcall3 / hybrid）。"""
     from cropability.genomics.pipeline import QCThresholds, VariantPipeline
 
     qc = QCThresholds(
@@ -300,10 +300,10 @@ def build_parser() -> argparse.ArgumentParser:
     ld.add_argument("--n-snps", type=int, default=500)
 
     # pileup
-    pileup = sub.add_parser("pileup", help="运行 samtools mpileup")
+    pileup = sub.add_parser("pileup", help="运行原生 mpileup")
     pileup.add_argument("-r", "--reference", required=True, help="参考基因组 FASTA")
     pileup.add_argument("-b", "--bam", required=True, nargs="+", help="输入 BAM/CRAM 文件列表")
-    pileup.add_argument("-o", "--output", required=True, help="输出 mpileup 文本路径")
+    pileup.add_argument("-o", "--output", required=True, help="输出位点汇总路径（TSV）")
     pileup.add_argument("--region", default=None, help="区域过滤，如 chr1:1-100000")
     pileup.add_argument("--min-depth", type=int, default=10, help="最小深度阈值")
     pileup.add_argument("--min-baseq", type=int, default=20, help="最小碱基质量")
