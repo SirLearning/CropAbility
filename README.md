@@ -76,10 +76,19 @@ cropability snp -i samples.fa --min-af 0.05 --min-depth 10
 # 计算 LD 矩阵
 cropability ld --n-samples 500 --n-snps 1000
 
+# 运行原生 mpileup（真实 BAM/CRAM 输入）
+cropability pileup -r ref.fa -b sample1.bam sample2.bam -o cohort.mpileup
+
+# 运行变异检测流程（默认 hybrid: 原生 mpileup + 原生 FastCall3 逻辑）
+cropability call-variants -r ref.fa -b sample1.bam sample2.bam -o cohort.vcf --mode hybrid
+
 # 导出 TorchScript 模型（供 Java 调用）
 cropability export --model add --output model.pt
 cropability export --model embedding --output embed.pt
 ```
+
+> NGS 流程默认在 CropAbility 内部执行，不依赖外部 `samtools/FastCall3` 命令。
+> 运行时需要 `pysam`（`pip install "cropability[io]"`）。可选 Rust 后端可用于性能加速。
 
 ### Python API
 
