@@ -6,12 +6,12 @@ NGS 变异检测流程编排
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Dict, List, Optional, Sequence, Union
 import shutil
 import subprocess
 import time
+from collections.abc import Sequence
+from dataclasses import dataclass, field
+from pathlib import Path
 
 from cropability.genomics.fastcall3 import FastCall3Config, FastCall3Runner
 from cropability.io.bam import AlignmentInputManager
@@ -39,7 +39,7 @@ class PipelineConfig:
 class VariantPipeline:
     """NGS 变异检测流程。"""
 
-    def __init__(self, config: Optional[PipelineConfig] = None) -> None:
+    def __init__(self, config: PipelineConfig | None = None) -> None:
         self.config = config or PipelineConfig()
         self.fastcall3_runner = FastCall3Runner(self.config.fastcall3)
 
@@ -51,18 +51,18 @@ class VariantPipeline:
 
     def run_mpileup(
         self,
-        reference: Union[str, Path],
-        bam_files: Sequence[Union[str, Path]],
-        output_path: Union[str, Path],
+        reference: str | Path,
+        bam_files: Sequence[str | Path],
+        output_path: str | Path,
         qc: QCThresholds,
-        regions: Optional[str] = None,
-        extra_args: Optional[Sequence[str]] = None,
+        regions: str | None = None,
+        extra_args: Sequence[str] | None = None,
         dry_run: bool = False,
-    ) -> Dict[str, object]:
+    ) -> dict[str, object]:
         samtools = self._resolve_executable(self.config.samtools_executable)
         out = Path(output_path)
 
-        cmd: List[str] = [
+        cmd: list[str] = [
             samtools,
             "mpileup",
             "-f",
@@ -100,14 +100,14 @@ class VariantPipeline:
 
     def run_fastcall3(
         self,
-        reference: Union[str, Path],
-        bam_files: Sequence[Union[str, Path]],
-        output_vcf: Union[str, Path],
+        reference: str | Path,
+        bam_files: Sequence[str | Path],
+        output_vcf: str | Path,
         qc: QCThresholds,
-        regions: Optional[str] = None,
-        extra_args: Optional[Sequence[str]] = None,
+        regions: str | None = None,
+        extra_args: Sequence[str] | None = None,
         dry_run: bool = False,
-    ) -> Dict[str, object]:
+    ) -> dict[str, object]:
         result = self.fastcall3_runner.run(
             reference=reference,
             bam_files=bam_files,
@@ -130,14 +130,14 @@ class VariantPipeline:
     def run(
         self,
         mode: str,
-        reference: Union[str, Path],
-        bam_files: Sequence[Union[str, Path]],
-        output: Union[str, Path],
-        qc: Optional[QCThresholds] = None,
-        regions: Optional[str] = None,
-        mpileup_output: Optional[Union[str, Path]] = None,
+        reference: str | Path,
+        bam_files: Sequence[str | Path],
+        output: str | Path,
+        qc: QCThresholds | None = None,
+        regions: str | None = None,
+        mpileup_output: str | Path | None = None,
         dry_run: bool = False,
-    ) -> Dict[str, object]:
+    ) -> dict[str, object]:
         mode = mode.lower()
         if mode not in {"mpileup", "fastcall3", "hybrid"}:
             raise ValueError("mode must be one of: mpileup, fastcall3, hybrid")
@@ -148,7 +148,7 @@ class VariantPipeline:
         bam_paths = [f.path for f in alignment_files]
 
         start = time.time()
-        report: Dict[str, object] = {"mode": mode, "reference": str(reference)}
+        report: dict[str, object] = {"mode": mode, "reference": str(reference)}
         if mode == "mpileup":
             report["mpileup"] = self.run_mpileup(
                 reference=reference,

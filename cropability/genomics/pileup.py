@@ -6,9 +6,9 @@ mpileup 解析与标准化
 
 from __future__ import annotations
 
+from collections.abc import Iterator, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, Iterator, List, Optional, Sequence, Tuple, Union
 
 from cropability.utils.logging import get_logger
 
@@ -22,7 +22,7 @@ class PileupSample:
     """单样本位点统计。"""
 
     depth: int
-    base_counts: Dict[str, int]
+    base_counts: dict[str, int]
     insertions: int = 0
     deletions: int = 0
 
@@ -38,7 +38,7 @@ class PileupRecord:
     chrom: str
     pos: int
     ref_base: str
-    samples: Dict[str, PileupSample] = field(default_factory=dict)
+    samples: dict[str, PileupSample] = field(default_factory=dict)
 
     def total_depth(self) -> int:
         return sum(s.depth for s in self.samples.values())
@@ -52,12 +52,12 @@ class PileupSiteSummary:
     pos: int
     ref_base: str
     depth: int
-    alt_base: Optional[str]
+    alt_base: str | None
     alt_count: int
     alt_freq: float
 
 
-def _parse_pileup_bases(bases: str, ref_base: str) -> Tuple[Dict[str, int], int, int]:
+def _parse_pileup_bases(bases: str, ref_base: str) -> tuple[dict[str, int], int, int]:
     counts = {b: 0 for b in _BASES}
     insertions = 0
     deletions = 0
@@ -117,10 +117,10 @@ class MpileupParser:
     每个样本占 3 列。
     """
 
-    def __init__(self, sample_names: Optional[Sequence[str]] = None) -> None:
+    def __init__(self, sample_names: Sequence[str] | None = None) -> None:
         self.sample_names = list(sample_names) if sample_names is not None else None
 
-    def parse_line(self, line: str) -> Optional[PileupRecord]:
+    def parse_line(self, line: str) -> PileupRecord | None:
         line = line.rstrip("\n")
         if not line:
             return None
@@ -142,7 +142,7 @@ class MpileupParser:
                 )
             names = list(self.sample_names)
 
-        samples: Dict[str, PileupSample] = {}
+        samples: dict[str, PileupSample] = {}
         for i, name in enumerate(names):
             depth = int(per_sample[i * 3])
             bases = per_sample[i * 3 + 1]
@@ -161,7 +161,7 @@ class MpileupParser:
             samples=samples,
         )
 
-    def parse_file(self, path: Union[str, Path]) -> Iterator[PileupRecord]:
+    def parse_file(self, path: str | Path) -> Iterator[PileupRecord]:
         p = Path(path)
         with p.open("r", encoding="utf-8") as f:
             for line in f:
@@ -174,8 +174,8 @@ class MpileupParser:
         records: Iterator[PileupRecord],
         min_depth: int = 10,
         min_alt_freq: float = 0.05,
-    ) -> List[PileupSiteSummary]:
-        summaries: List[PileupSiteSummary] = []
+    ) -> list[PileupSiteSummary]:
+        summaries: list[PileupSiteSummary] = []
         for rec in records:
             merged_counts = {b: 0 for b in _BASES}
             depth = 0
@@ -208,4 +208,3 @@ class MpileupParser:
 
         logger.info(f"Generated {len(summaries)} pileup site summaries")
         return summaries
-

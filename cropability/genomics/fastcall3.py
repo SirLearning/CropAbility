@@ -6,11 +6,11 @@ FastCall3 外部调用适配层
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Dict, List, Optional, Sequence, Union
 import shutil
 import subprocess
+from collections.abc import Sequence
+from dataclasses import dataclass, field
+from pathlib import Path
 
 from cropability.utils.logging import get_logger
 
@@ -21,12 +21,12 @@ logger = get_logger(__name__)
 class FastCall3Config:
     executable: str = "FastCall3"
     timeout_seconds: int = 3600
-    extra_args: List[str] = field(default_factory=list)
+    extra_args: list[str] = field(default_factory=list)
 
 
 @dataclass
 class FastCall3RunResult:
-    command: List[str]
+    command: list[str]
     returncode: int
     stdout: str
     stderr: str
@@ -40,7 +40,7 @@ class FastCall3RunResult:
 class FastCall3Runner:
     """FastCall3 适配执行器。"""
 
-    def __init__(self, config: Optional[FastCall3Config] = None) -> None:
+    def __init__(self, config: FastCall3Config | None = None) -> None:
         self.config = config or FastCall3Config()
 
     def validate_executable(self) -> str:
@@ -56,17 +56,17 @@ class FastCall3Runner:
 
     def build_command(
         self,
-        reference: Union[str, Path],
-        bam_files: Sequence[Union[str, Path]],
-        output_vcf: Union[str, Path],
-        regions: Optional[str] = None,
-        min_base_quality: Optional[int] = None,
-        min_mapping_quality: Optional[int] = None,
-        min_depth: Optional[int] = None,
-        extra_args: Optional[Sequence[str]] = None,
-    ) -> List[str]:
+        reference: str | Path,
+        bam_files: Sequence[str | Path],
+        output_vcf: str | Path,
+        regions: str | None = None,
+        min_base_quality: int | None = None,
+        min_mapping_quality: int | None = None,
+        min_depth: int | None = None,
+        extra_args: Sequence[str] | None = None,
+    ) -> list[str]:
         exe = self.validate_executable()
-        cmd: List[str] = [exe, "-r", str(reference), "-o", str(output_vcf)]
+        cmd: list[str] = [exe, "-r", str(reference), "-o", str(output_vcf)]
         for bam in bam_files:
             cmd.extend(["-i", str(bam)])
         if regions:
@@ -84,14 +84,14 @@ class FastCall3Runner:
 
     def run(
         self,
-        reference: Union[str, Path],
-        bam_files: Sequence[Union[str, Path]],
-        output_vcf: Union[str, Path],
-        regions: Optional[str] = None,
-        min_base_quality: Optional[int] = None,
-        min_mapping_quality: Optional[int] = None,
-        min_depth: Optional[int] = None,
-        extra_args: Optional[Sequence[str]] = None,
+        reference: str | Path,
+        bam_files: Sequence[str | Path],
+        output_vcf: str | Path,
+        regions: str | None = None,
+        min_base_quality: int | None = None,
+        min_mapping_quality: int | None = None,
+        min_depth: int | None = None,
+        extra_args: Sequence[str] | None = None,
         dry_run: bool = False,
     ) -> FastCall3RunResult:
         output_path = Path(output_vcf)
@@ -141,4 +141,3 @@ class FastCall3Runner:
                 f"FastCall3 completed but output VCF not found: {output_path}"
             )
         return result
-

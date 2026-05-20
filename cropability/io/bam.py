@@ -6,10 +6,10 @@ BAM/CRAM 输入抽象
 
 from __future__ import annotations
 
+import shutil
+from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, List, Optional, Sequence, Tuple, Union
-import shutil
 
 from cropability.utils.logging import get_logger
 
@@ -24,7 +24,7 @@ class AlignmentFile:
     sample_name: str
     fmt: str  # bam | cram
     has_index: bool
-    index_path: Optional[Path]
+    index_path: Path | None
 
     @property
     def is_bam(self) -> bool:
@@ -44,7 +44,7 @@ def _detect_format(path: Path) -> str:
     raise ValueError(f"Unsupported alignment format for: {path} (expected .bam/.cram)")
 
 
-def _resolve_index(path: Path, fmt: str) -> Optional[Path]:
+def _resolve_index(path: Path, fmt: str) -> Path | None:
     if fmt == "bam":
         candidates = [Path(f"{path}.bai"), path.with_suffix(".bai")]
     else:
@@ -66,7 +66,7 @@ class AlignmentInputManager:
     - samtools / optional pysam 依赖检查
     """
 
-    def __init__(self, paths: Sequence[Union[str, Path]]) -> None:
+    def __init__(self, paths: Sequence[str | Path]) -> None:
         if not paths:
             raise ValueError("At least one alignment file is required")
         self.paths = [Path(p) for p in paths]
@@ -94,8 +94,8 @@ class AlignmentInputManager:
         if require_pysam and not self.check_pysam():
             raise RuntimeError("pysam is required but not installed")
 
-    def collect(self, require_index: bool = True) -> List[AlignmentFile]:
-        files: List[AlignmentFile] = []
+    def collect(self, require_index: bool = True) -> list[AlignmentFile]:
+        files: list[AlignmentFile] = []
         for p in self.paths:
             if not p.exists():
                 raise FileNotFoundError(f"Alignment file not found: {p}")
@@ -117,4 +117,3 @@ class AlignmentInputManager:
             )
         logger.info(f"Collected {len(files)} alignment files")
         return files
-

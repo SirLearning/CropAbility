@@ -2,7 +2,7 @@
 
 from cropability.io.bam import AlignmentFile, AlignmentInputManager
 from cropability.io.fasta import FastaReader, FastaWriter
-from cropability.io.vcf import VCFReader, VCFWriter, VCFRecord
+from cropability.io.vcf import VCFReader, VCFRecord, VCFWriter
 
 __all__ = [
     "AlignmentFile",
