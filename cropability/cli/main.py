@@ -9,6 +9,8 @@ CropAbility 命令行工具
   ld        — 计算连锁不平衡矩阵
   gwas      — 全基因组关联分析
   align     — 批量序列比对
+  pileup    — 运行 samtools mpileup
+  call-variants — 运行 NGS 变异检测流程
   export    — 导出 TorchScript 模型
   benchmark — GPU 性能基准测试
 """
@@ -199,6 +201,60 @@ def cmd_ld(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_pileup(args: argparse.Namespace) -> int:
+    """运行 samtools mpileup 并输出 pileup 文本。"""
+    from cropability.genomics.pipeline import QCThresholds, VariantPipeline
+
+    qc = QCThresholds(
+        min_depth=args.min_depth,
+        min_base_quality=args.min_baseq,
+        min_mapping_quality=args.min_mapq,
+        min_alt_freq=args.min_af,
+    )
+    pipeline = VariantPipeline()
+    report = pipeline.run(
+        mode="mpileup",
+        reference=args.reference,
+        bam_files=args.bam,
+        output=args.output,
+        qc=qc,
+        regions=args.region,
+        dry_run=args.dry_run,
+    )
+    print("mpileup completed")
+    print(f"  output: {report['mpileup']['output']}")
+    return 0
+
+
+def cmd_call_variants(args: argparse.Namespace) -> int:
+    """运行变异检测流程（mpileup / fastcall3 / hybrid）。"""
+    from cropability.genomics.pipeline import QCThresholds, VariantPipeline
+
+    qc = QCThresholds(
+        min_depth=args.min_depth,
+        min_base_quality=args.min_baseq,
+        min_mapping_quality=args.min_mapq,
+        min_alt_freq=args.min_af,
+    )
+    pipeline = VariantPipeline()
+    report = pipeline.run(
+        mode=args.mode,
+        reference=args.reference,
+        bam_files=args.bam,
+        output=args.output,
+        qc=qc,
+        regions=args.region,
+        mpileup_output=args.mpileup_output,
+        dry_run=args.dry_run,
+    )
+    print(f"pipeline mode={report['mode']} completed")
+    if "mpileup" in report:
+        print(f"  mpileup: {report['mpileup']['output']}")
+    if "fastcall3" in report:
+        print(f"  vcf: {report['fastcall3']['output']}")
+    return 0
+
+
 # ---------------------------------------------------------------------------
 # 主解析器
 # ---------------------------------------------------------------------------
@@ -243,6 +299,37 @@ def build_parser() -> argparse.ArgumentParser:
     ld.add_argument("--n-samples", type=int, default=200)
     ld.add_argument("--n-snps", type=int, default=500)
 
+    # pileup
+    pileup = sub.add_parser("pileup", help="运行 samtools mpileup")
+    pileup.add_argument("-r", "--reference", required=True, help="参考基因组 FASTA")
+    pileup.add_argument("-b", "--bam", required=True, nargs="+", help="输入 BAM/CRAM 文件列表")
+    pileup.add_argument("-o", "--output", required=True, help="输出 mpileup 文本路径")
+    pileup.add_argument("--region", default=None, help="区域过滤，如 chr1:1-100000")
+    pileup.add_argument("--min-depth", type=int, default=10, help="最小深度阈值")
+    pileup.add_argument("--min-baseq", type=int, default=20, help="最小碱基质量")
+    pileup.add_argument("--min-mapq", type=int, default=20, help="最小比对质量")
+    pileup.add_argument("--min-af", type=float, default=0.05, help="最小替代等位频率")
+    pileup.add_argument("--dry-run", action="store_true", help="仅打印命令，不实际执行")
+
+    # call-variants
+    call = sub.add_parser("call-variants", help="运行变异检测流程")
+    call.add_argument("-r", "--reference", required=True, help="参考基因组 FASTA")
+    call.add_argument("-b", "--bam", required=True, nargs="+", help="输入 BAM/CRAM 文件列表")
+    call.add_argument("-o", "--output", required=True, help="输出 VCF（或 mpileup）路径")
+    call.add_argument(
+        "--mode",
+        choices=["mpileup", "fastcall3", "hybrid"],
+        default="hybrid",
+        help="流程模式",
+    )
+    call.add_argument("--mpileup-output", default=None, help="hybrid 模式的中间 mpileup 输出路径")
+    call.add_argument("--region", default=None, help="区域过滤，如 chr1:1-100000")
+    call.add_argument("--min-depth", type=int, default=10, help="最小深度阈值")
+    call.add_argument("--min-baseq", type=int, default=20, help="最小碱基质量")
+    call.add_argument("--min-mapq", type=int, default=20, help="最小比对质量")
+    call.add_argument("--min-af", type=float, default=0.05, help="最小替代等位频率")
+    call.add_argument("--dry-run", action="store_true", help="仅打印命令，不实际执行")
+
     return parser
 
 
@@ -252,6 +339,8 @@ _COMMANDS = {
     "snp": cmd_snp,
     "export": cmd_export,
     "ld": cmd_ld,
+    "pileup": cmd_pileup,
+    "call-variants": cmd_call_variants,
 }
 
 

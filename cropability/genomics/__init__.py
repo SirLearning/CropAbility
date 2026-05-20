@@ -13,6 +13,9 @@ from cropability.genomics.variant import VariantCaller, SNPResult
 from cropability.genomics.ld import LDCalculator, LDResult
 from cropability.genomics.gwas import GWASEngine, GWASResult
 from cropability.genomics.alignment import SmithWatermanGPU
+from cropability.genomics.fastcall3 import FastCall3Runner, FastCall3Config, FastCall3RunResult
+from cropability.genomics.pileup import MpileupParser, PileupRecord, PileupSample, PileupSiteSummary
+from cropability.genomics.pipeline import VariantPipeline, PipelineConfig, QCThresholds
 
 __all__ = [
     "VariantCaller",
@@ -22,4 +25,14 @@ __all__ = [
     "GWASEngine",
     "GWASResult",
     "SmithWatermanGPU",
+    "FastCall3Runner",
+    "FastCall3Config",
+    "FastCall3RunResult",
+    "MpileupParser",
+    "PileupRecord",
+    "PileupSample",
+    "PileupSiteSummary",
+    "VariantPipeline",
+    "PipelineConfig",
+    "QCThresholds",
 ]

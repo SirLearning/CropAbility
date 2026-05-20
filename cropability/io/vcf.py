@@ -182,11 +182,22 @@ class VCFWriter:
         self.sample_names = sample_names or []
         self._f = self.path.open("w", encoding="utf-8")
         self._wrote_header = False
+        self._meta_lines: List[str] = []
 
-    def write_header(self, extra_meta: Optional[List[str]] = None) -> None:
-        self._f.write("##fileformat=VCFv4.2\n")
+    def write_header(
+        self,
+        extra_meta: Optional[List[str]] = None,
+        source: Optional[str] = None,
+        fileformat: str = "VCFv4.2",
+    ) -> None:
+        self._f.write(f"##fileformat={fileformat}\n")
+        if source:
+            meta = f"##source={source}"
+            self._f.write(meta + "\n")
+            self._meta_lines.append(meta)
         for line in (extra_meta or []):
             self._f.write(line + "\n")
+            self._meta_lines.append(line)
         cols = ["#CHROM", "POS", "ID", "REF", "ALT", "QUAL", "FILTER", "INFO"]
         if self.sample_names:
             cols += ["FORMAT"] + self.sample_names
@@ -208,6 +219,12 @@ class VCFWriter:
         if rec.format:
             cols.append(":".join(rec.format))
             cols.extend(rec.samples)
+        elif self.sample_names:
+            cols.append("GT")
+            if rec.samples:
+                cols.extend(rec.samples)
+            else:
+                cols.extend(["./."] * len(self.sample_names))
         self._f.write("\t".join(cols) + "\n")
 
     def close(self) -> None:
