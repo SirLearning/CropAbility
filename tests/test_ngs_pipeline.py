@@ -5,9 +5,10 @@ import pytest
 
 from cropability.cli.main import build_parser
 from cropability.genomics.fastcall3 import FastCall3Config, FastCall3Runner
-from cropability.genomics.pileup import MpileupParser
+from cropability.genomics.pileup import MpileupParser, PileupRecord, PileupSample
 from cropability.genomics.pipeline import QCThresholds, VariantPipeline
 from cropability.io.bam import AlignmentInputManager
+from cropability.io.vcf import VCFReader
 
 
 class TestAlignmentInputManager:
@@ -45,10 +46,9 @@ class TestMpileupParser:
 
 
 class TestFastCall3Runner:
-    def test_build_and_dry_run(self, monkeypatch, tmp_path):
-        monkeypatch.setattr("shutil.which", lambda x: f"/usr/bin/{x}")
+    def test_build_and_dry_run(self, tmp_path):
         out = tmp_path / "out.vcf"
-        runner = FastCall3Runner(FastCall3Config(executable="FastCall3"))
+        runner = FastCall3Runner(FastCall3Config())
         result = runner.run(
             reference="ref.fa",
             bam_files=["a.bam", "b.bam"],
@@ -60,14 +60,48 @@ class TestFastCall3Runner:
             dry_run=True,
         )
         assert result.returncode == 0
-        assert "-r" in result.command
-        assert "-o" in result.command
-        assert "--min-base-qual" in result.command
+        assert result.backend == "dry-run"
+        assert "--reference" in result.command
+        assert "--output" in result.command
+
+    def test_native_run_writes_vcf(self, monkeypatch, tmp_path):
+        out = tmp_path / "out.vcf"
+        runner = FastCall3Runner(FastCall3Config(prefer_rust_backend=False))
+
+        fake_records = [
+            PileupRecord(
+                chrom="chr1",
+                pos=42,
+                ref_base="A",
+                samples={
+                    "a": PileupSample(depth=10, base_counts={"A": 7, "C": 3, "G": 0, "T": 0, "N": 0}),
+                    "b": PileupSample(depth=8, base_counts={"A": 3, "C": 5, "G": 0, "T": 0, "N": 0}),
+                },
+            )
+        ]
+        monkeypatch.setattr(runner.pileup_engine, "generate_records", lambda **_: iter(fake_records))
+
+        res = runner.run(
+            reference="ref.fa",
+            bam_files=["a.bam", "b.bam"],
+            output_vcf=out,
+            min_depth=1,
+            min_alt_freq=0.1,
+            dry_run=False,
+        )
+        assert res.ok
+        assert res.n_records == 1
+
+        records = list(VCFReader(out))
+        assert len(records) == 1
+        assert records[0].chrom == "chr1"
+        assert records[0].pos == 42
+        assert records[0].ref == "A"
+        assert records[0].alt == ["C"]
 
 
 class TestVariantPipeline:
-    def test_run_hybrid_dry_run(self, monkeypatch, tmp_path):
-        monkeypatch.setattr("shutil.which", lambda x: f"/usr/bin/{x}")
+    def test_run_hybrid_dry_run(self, tmp_path):
         bam = tmp_path / "cohort.bam"
         bai = tmp_path / "cohort.bam.bai"
         bam.write_bytes(b"")
@@ -85,6 +119,8 @@ class TestVariantPipeline:
         assert report["mode"] == "hybrid"
         assert "mpileup" in report
         assert "fastcall3" in report
+        assert report["engine"] == "native"
+        assert report["fastcall3"]["engine"] == "dry-run"
 
 
 class TestCliExtensions:
