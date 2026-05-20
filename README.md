@@ -76,10 +76,18 @@ cropability snp -i samples.fa --min-af 0.05 --min-depth 10
 # 计算 LD 矩阵
 cropability ld --n-samples 500 --n-snps 1000
 
+# 运行 mpileup（真实 BAM/CRAM 输入）
+cropability pileup -r ref.fa -b sample1.bam sample2.bam -o cohort.mpileup
+
+# 运行变异检测流程（默认 hybrid: mpileup + FastCall3）
+cropability call-variants -r ref.fa -b sample1.bam sample2.bam -o cohort.vcf --mode hybrid
+
 # 导出 TorchScript 模型（供 Java 调用）
 cropability export --model add --output model.pt
 cropability export --model embedding --output embed.pt
 ```
+
+> NGS 流程依赖外部工具：`samtools`（必需），`FastCall3`（`fastcall3`/`hybrid` 模式必需）。
 
 ### Python API
 
