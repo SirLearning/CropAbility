@@ -1,9 +1,9 @@
 """测试 NGS pipeline 新增模块。"""
 
-from pathlib import Path
 
 import pytest
 
+from cropability.cli.main import build_parser
 from cropability.genomics.fastcall3 import FastCall3Config, FastCall3Runner
 from cropability.genomics.pileup import MpileupParser
 from cropability.genomics.pipeline import QCThresholds, VariantPipeline
@@ -85,3 +85,24 @@ class TestVariantPipeline:
         assert report["mode"] == "hybrid"
         assert "mpileup" in report
         assert "fastcall3" in report
+
+
+class TestCliExtensions:
+    def test_new_subcommands_exist(self):
+        parser = build_parser()
+        ns = parser.parse_args(
+            [
+                "call-variants",
+                "-r",
+                "ref.fa",
+                "-b",
+                "a.bam",
+                "-o",
+                "out.vcf",
+                "--mode",
+                "hybrid",
+                "--dry-run",
+            ]
+        )
+        assert ns.command == "call-variants"
+        assert ns.mode == "hybrid"
