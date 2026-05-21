@@ -29,12 +29,12 @@ Root: `Cargo.toml` (single crate), `pyproject.toml` (`[tool.maturin]`).
 ## Build
 
 ```bash
-conda env create -f environment.yml
+python install.py              # or: python install.py --cpu
 conda activate cropability
-pip install -e ".[gpu,dev,io,rust]"
-maturin develop --release --features python,htslib
 cargo test
 ```
+
+Manual maturin (if not using `install.py`): see [DEPENDENCIES.md](DEPENDENCIES.md).
 
 ## Python usage
 

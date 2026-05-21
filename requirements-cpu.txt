@@ -1,0 +1,8 @@
+# CPU stack: install after `conda activate cropability`
+#   pip install -r requirements-cpu.txt
+#
+# Or use: python install.py --cpu
+
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.1.0
+-e ".[dev,io,rust]"

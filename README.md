@@ -38,17 +38,17 @@ Single root `Cargo.toml` — no nested Rust test crates or TorchScript.
 
 ### Install
 
-**Recommended — Conda** (Python, Rust, bioinformatics tools, and pip extras):
+**Recommended — one command** (Conda base + pip + Rust extension):
 
 ```bash
 git clone https://github.com/example/CropAbility.git
 cd CropAbility
-conda env create -f environment.yml
+python install.py              # GPU (CUDA PyTorch + Triton)
+# python install.py --cpu      # CPU-only PyTorch
 conda activate cropability
-
-# CPU-only (no CUDA): environment_cpu.yml
-# Then: maturin develop --release --features python,htslib && cargo test
 ```
+
+See [doc/DEPENDENCIES.md](doc/DEPENDENCIES.md) for manual steps and `requirements-gpu.txt` / `requirements-cpu.txt`.
 
 **Pip only** (install Rust and samtools separately if using native layers):
 
@@ -130,10 +130,11 @@ launch_ddp(train_fn, num_gpus=2)
 ### Rust native extension (PyO3)
 
 ```bash
-maturin develop --release --features python,htslib
+python install.py --skip-conda --skip-pip   # maturin only, env active
+# or: maturin develop --release --features python,htslib
 ```
 
-See [doc/RUST_DEVELOPMENT.md](doc/RUST_DEVELOPMENT.md) for build steps and Python API.
+See [doc/RUST_DEVELOPMENT.md](doc/RUST_DEVELOPMENT.md) and [doc/DEPENDENCIES.md](doc/DEPENDENCIES.md).
 
 ---
 

@@ -33,12 +33,14 @@ src/main/resources/              Runtime config; private/ gitignored
 |------|------|
 | `pyproject.toml` | Python package, pytest, maturin config — **do not merge with Cargo** |
 | `Cargo.toml` | **Single** crate `cropability-native` at repo root |
-| `environment.yml` / `environment_cpu.yml` | Conda (recommended) |
+| `environment.yml` | Minimal Conda base (recommended) |
+| `install.py` | One-shot Conda + pip + maturin |
+| `requirements-gpu.txt` / `requirements-cpu.txt` | PyTorch + editable extras |
 
 ```bash
-conda env create -f environment.yml && conda activate cropability
-pip install -e ".[gpu,dev,io,rust]"
-maturin develop --release --features python,htslib
+python install.py              # GPU
+# python install.py --cpu      # CPU-only PyTorch
+conda activate cropability
 pytest src/test/python
 cargo test   # optional
 ```

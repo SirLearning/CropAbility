@@ -45,7 +45,7 @@ Build a **publishable** genomics toolkit:
 ```
 Cargo.toml                    # single crate: cropability-native
 pyproject.toml                # Python package + maturin (keep separate from Cargo)
-environment.yml / environment_cpu.yml
+environment.yml / install.py / requirements-gpu.txt / requirements-cpu.txt
 
 src/main/python/cropability/  # ONLY installable Python code
 src/main/rust/                # flat: lib.rs, python.rs, io/, genomics/
@@ -70,9 +70,8 @@ Do **not** add explanatory README files under `src/test/` or `src/main/python/`.
 ## Build and test
 
 ```bash
-conda env create -f environment.yml && conda activate cropability
-pip install -e ".[gpu,dev,io,rust]"
-maturin develop --release --features python,htslib
+python install.py && conda activate cropability
+# CPU-only PyTorch: python install.py --cpu
 pytest src/test/python
 cargo test
 ```

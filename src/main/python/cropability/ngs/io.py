@@ -52,10 +52,14 @@ class AlignmentInputManager:
             fmt = "bam" if p.suffix.lower() == ".bam" else "cram" if p.suffix.lower() == ".cram" else None
             if fmt is None:
                 raise ValueError(f"Unsupported alignment format: {p}")
-            idx = p.with_suffix(".bai" if fmt == "bam" else ".crai")
-            has_index = idx.exists()
+            idx_candidates = (
+                [p.with_suffix(".bai"), Path(p.with_name(f"{p.name}.bai"))]
+                if fmt == "bam"
+                else [p.with_suffix(".crai"), Path(p.with_name(f"{p.name}.crai"))]
+            )
+            has_index = any(c.exists() for c in idx_candidates)
             if require_index and not has_index:
-                raise FileNotFoundError(f"Missing index: {idx}")
+                raise FileNotFoundError(f"Missing index for {p}")
         return [
             AlignmentFile(
                 path=p,

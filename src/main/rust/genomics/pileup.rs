@@ -3,7 +3,7 @@
 use anyhow::{bail, Result};
 use std::collections::BTreeMap;
 use std::fs::File;
-use std::io::{BufRead, BufReader, Write};
+use std::io::Write;
 use std::path::{Path, PathBuf};
 
 const BASES: [&str; 5] = ["A", "C", "G", "T", "N"];
@@ -167,7 +167,7 @@ impl MpileupParser {
             let ref_b = &rec.ref_base;
             let alt_candidates: Vec<_> = merged
                 .iter()
-                .filter(|(b, c)| matches!(b.as_str(), "A" | "C" | "G" | "T") && b != ref_b && **c > 0)
+                .filter(|(b, c)| matches!(b.as_str(), "A" | "C" | "G" | "T") && *b != ref_b && **c > 0)
                 .collect();
             if alt_candidates.is_empty() {
                 continue;
@@ -283,11 +283,11 @@ fn generate_records_htslib(
             }
             let key = (chrom.clone(), pos1);
             if !ref_table.contains_key(&key) {
-                let seq = ref_reader.fetch(&chrom, pos0, pos0 + 1)?;
+                let seq = ref_reader.fetch_seq(&chrom, pos0 as usize, (pos0 + 1) as usize)?;
                 let rb = if seq.is_empty() {
                     "N".to_string()
                 } else {
-                    seq.to_uppercase()
+                    String::from_utf8_lossy(seq).to_uppercase()
                 };
                 ref_table.insert(key.clone(), rb);
             }
@@ -326,7 +326,7 @@ fn empty_sample() -> PileupSample {
 
 #[cfg(feature = "htslib")]
 fn count_column(
-    pileup: &rust_htslib::bam::pileup::Pileup<'_>,
+    pileup: &rust_htslib::bam::pileup::Pileup,
     ref_base: &str,
     min_base_quality: u8,
     min_mapping_quality: u8,
@@ -357,11 +357,10 @@ fn count_column(
             continue;
         }
         depth += 1;
-        let indel = alignment.indel();
-        if indel > 0 {
-            insertions += 1;
-        } else if indel < 0 {
-            deletions += 1;
+        match alignment.indel() {
+            rust_htslib::bam::pileup::Indel::Ins(_) => insertions += 1,
+            rust_htslib::bam::pileup::Indel::Del(_) => deletions += 1,
+            rust_htslib::bam::pileup::Indel::None => {}
         }
         let base_byte = record.seq()[qpos as usize];
         let b = if let Ok(ch) = std::str::from_utf8(&[base_byte]) {

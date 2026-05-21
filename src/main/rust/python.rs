@@ -133,7 +133,9 @@ impl PyVariantPipeline {
         }
         if let Some(fc) = report.fastcall3 {
             let f = PyDict::new_bound(py);
-            f.set_item("backend", fc.backend)?;
+            let engine = fc.backend.clone();
+            f.set_item("backend", engine.clone())?;
+            f.set_item("engine", engine)?;
             f.set_item("output_vcf", fc.output_vcf.display().to_string())?;
             f.set_item("returncode", fc.returncode)?;
             f.set_item("n_records", fc.n_records)?;

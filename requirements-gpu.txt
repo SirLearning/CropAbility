@@ -1,0 +1,8 @@
+# GPU stack: install after `conda activate cropability`
+#   pip install -r requirements-gpu.txt
+#
+# Or use: python install.py
+
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch>=2.1.0
+-e ".[gpu,dev,io,rust]"

@@ -51,7 +51,7 @@ impl FastCall3Runner {
                 stdout: "dry-run".into(),
                 stderr: String::new(),
                 output_vcf: output_vcf.to_path_buf(),
-                backend: "dry-run".into(),
+                backend: "rust".into(),
                 n_records: 0,
                 elapsed_seconds: 0.0,
             });
@@ -75,16 +75,16 @@ impl FastCall3Runner {
             })
             .collect();
 
-        let meta = [
-            "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total Depth\">",
-            "##INFO=<ID=AF,Number=1,Type=Float,Description=\"Alt Allele Frequency\">",
-            "##INFO=<ID=AC,Number=1,Type=Integer,Description=\"Alt Allele Count\">",
-            "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
-            "##FORMAT=<ID=DP,Number=1,Type=Integer,Description=\"Read Depth\">",
-            "##FORMAT=<ID=AD,Number=R,Type=Integer,Description=\"Allele depths\">",
+        let meta: Vec<String> = vec![
+            "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total Depth\">".into(),
+            "##INFO=<ID=AF,Number=1,Type=Float,Description=\"Alt Allele Frequency\">".into(),
+            "##INFO=<ID=AC,Number=1,Type=Integer,Description=\"Alt Allele Count\">".into(),
+            "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">".into(),
+            "##FORMAT=<ID=DP,Number=1,Type=Integer,Description=\"Read Depth\">".into(),
+            "##FORMAT=<ID=AD,Number=R,Type=Integer,Description=\"Allele depths\">".into(),
         ];
         let mut writer = VcfWriter::create(output_vcf, &sample_names)?;
-        writer.write_header("CropAbility.NativeFastCall3", &meta.to_vec())?;
+        writer.write_header("CropAbility.NativeFastCall3", &meta)?;
         let mut n_records = 0u32;
         for rec in records {
             if let Some(vcf) = call_record(&rec, &sample_names, min_depth, min_alt_freq) {
