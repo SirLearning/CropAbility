@@ -1,105 +1,114 @@
-# CropAbility — project TODO
+# CropAbility - project TODO
 
-Master execution checklist for the **CropAbility** publishable genomics toolkit (Python host + Rust `_core`). Completed items stay checked for audit. Log every completion in [`doc/TODO_PROGRESS_LOG.md`](TODO_PROGRESS_LOG.md).
+Master execution checklist for the **CropAbility** publishable genomics toolkit
+(Python host + Rust `_core`). This checklist follows the dated vault TODO source:
+`2026-05-21.md` -> `## CropAbility`.
 
-**Authority:** This file is the checkbox truth source for vault sync (see [`doc/TODO_PROGRESS_SYNC.md`](TODO_PROGRESS_SYNC.md)).
+**Authority:** This file is the repository checkbox truth source for vault sync
+(see [`doc/TODO_PROGRESS_SYNC.md`](TODO_PROGRESS_SYNC.md)).
 
-**Structure:** Sections follow the product architecture — foundation → GPU → genomics → NGS (Rust) → CLI → testing → delivery → backlog.
+**ID scheme:** Current task IDs use `CA-{section}-{item}`. Parent items end in
+`-00`; leaf items end in `-01`, `-02`, and so on.
 
----
+**Historical mapping:** The previous repository `M1-*` IDs map to current
+`CA-*` IDs in the vault note `CropAbility.md`, section
+`1.1.1 Historical ID migration`.
 
-## ID prefix reference
+**Traceability rules:**
 
-| Prefix | Area |
-|--------|------|
-| `M1-FOUND-*` | Packaging, install, config, agent rules |
-| `M1-GPU-*` | `cropability.gpu`, `cropability.kernels` |
-| `M1-GEN-*` | GPU `cropability.genomics` |
-| `M1-NGS-*` | Rust I/O + pipeline; Python `cropability.ngs` facade |
-| `M1-CLI-*` | `cropability` CLI |
-| `M1-TEST-*` | Pytest, `cargo test`, CI |
-| `M1-DELIV-*` | Docs, release, publish gates |
-| `M1-BACKLOG-*` | Post-M1 or cross-cutting research items |
-
-## Traceability rules
-
-- Every item has a stable ID: `M1-<AREA>-<NNN>`.
-- Mark `[x]` only when the change is merged in this repository.
-- Every completed item must have one entry in `doc/TODO_PROGRESS_LOG.md`.
-- Use `LogRef` on the checklist line to point to that log entry (date and title).
+- Mark `[x]` only for items checked in the dated vault TODO source.
+- Repository engineering completions should keep a `LogRef` to
+  `doc/TODO_PROGRESS_LOG.md` when one exists.
+- Historical exploration items that are complete only in the vault use
+  `LogRef: vault`.
 
 ---
 
-## 1. Foundation and packaging — [[doc/DEPENDENCIES]]
+## 1. FlagOS operator competition
 
-- [x] `M1-FOUND-001` Canonical repo layout: Python host (`src/main/python/cropability/`), flat Rust crate (`src/main/rust/`), pytest under `src/test/python/` | LogRef: 2026-05-21 / M1-FOUND-001
-- [x] `M1-FOUND-002` Agent and Cursor rules (`AGENTS.md`, `.cursor/rules/`), English-only policy | LogRef: 2026-05-21 / M1-FOUND-002
-- [x] `M1-FOUND-003` One-shot install path (`install.py`, `environment.yml`, `requirements-gpu.txt` / `requirements-cpu.txt`) | LogRef: 2026-05-21 / M1-FOUND-003
-- [x] `M1-FOUND-004` Git hygiene: ignore maturin-built `native/_core*.so`; document maturin rebuild | LogRef: 2026-05-21 / M1-FOUND-004
-- [ ] `M1-FOUND-005` Confirm public GitHub remote and README clone URL (`SirLearning/CropAbility`) | LogRef: pending
-- [ ] `M1-FOUND-006` Runtime config guide: `cropability.yaml` + `CROPABILITY_*` env vars with validation tests | LogRef: pending
+- [x] `CA-21-01` FlagOS operator development competition | LogRef: vault
 
 ---
 
-## 2. GPU compute — [[doc/PYTHON_DEVELOPMENT]]
+## 2. CropAbility GPU-enabled bioinformatics toolkit
 
-- [x] `M1-GPU-001` `DeviceManager` (H100/A2 detection, memory stats, primary device selection) | LogRef: 2026-05-21 / M1-GPU-001
-- [x] `M1-GPU-002` Triton/PyTorch kernels: sequence encode, GC, stats (Welford, z-score, correlation, pairwise) | LogRef: 2026-05-21 / M1-GPU-002
-- [ ] `M1-GPU-003` Multi-GPU DDP: document and pytest-smoke `launch_ddp` / `wrap_ddp` on dual-GPU hosts | LogRef: pending
-- [ ] `M1-GPU-004` Kernel correctness vs CPU reference: expand benchmarks in pytest (`slow` marker) | LogRef: pending
+- [ ] `CA-22-00` Integrate GPU computing into the CropAbility bioinformatics toolkit
 
----
+### 2.1 Project architecture
 
-## 3. GPU genomics — [[doc/PYTHON_DEVELOPMENT]]
+- [ ] `CA-221-00` Project architecture
 
-- [x] `M1-GEN-001` Core GPU modules: `VariantCaller`, `LDCalculator`, `GWASEngine` | LogRef: 2026-05-21 / M1-GEN-001
-- [x] `M1-GEN-002` `SmithWatermanGPU` batch scoring API | LogRef: 2026-05-21 / M1-GEN-002
-- [ ] `M1-GEN-003` End-to-end GPU SNP/LD/GWAS CLI paths validated on CUDA hardware (`@pytest.mark.gpu`) | LogRef: pending
-- [ ] `M1-GEN-004` Integration hooks for variation-library cohort outputs (VCF/PLINK ingest helpers) | LogRef: pending
+#### 2.1.1 Foundation
 
----
+- [ ] `CA-2211-00` Foundation
+- [x] `CA-2211-01` Canonical repository layout | LogRef: 2026-05-21 / M1-FOUND-001
+- [x] `CA-2211-02` Agent and English-only policy | LogRef: 2026-05-21 / M1-FOUND-002
+- [x] `CA-2211-03` One-shot installation path | LogRef: 2026-05-21 / M1-FOUND-003
+- [x] `CA-2211-04` Native `.so` git hygiene | LogRef: 2026-05-21 / M1-FOUND-004
+- [ ] `CA-2211-05` Confirm public GitHub remote and README clone URL
+- [ ] `CA-2211-06` `cropability.yaml` plus environment variable validation
+- [x] `CA-2211-07` Rust I/O plus PyO3 native extension | LogRef: 2026-05-21 / M1-NGS-001
+- [x] `CA-2211-08` Pytest layout and markers | LogRef: 2026-05-21 / M1-TEST-001
 
-## 4. NGS / native extension — [[doc/RUST_DEVELOPMENT]]
+#### 2.1.2 GPU
 
-- [x] `M1-NGS-001` Rust I/O: FASTA, BAM (htslib), VCF; PyO3 exports in `python.rs` | LogRef: 2026-05-21 / M1-NGS-001
-- [x] `M1-NGS-002` Thin Python facade `cropability.ngs` (pipeline, pileup, fastcall3, io) | LogRef: 2026-05-21 / M1-NGS-002
-- [x] `M1-NGS-003` Native in-process mpileup + FastCall3-style variant logic | LogRef: 2026-05-21 / M1-NGS-003
-- [x] `M1-NGS-004` CLI: `pileup`, `call-variants` (`--mode hybrid`) | LogRef: 2026-05-21 / M1-NGS-004
-- [ ] `M1-NGS-005` `--mode native` parity and performance vs hybrid on real BAM fixtures | LogRef: pending
-- [ ] `M1-NGS-006` CRAM input smoke + documented limitations | LogRef: pending
-- [ ] `M1-NGS-007` Deprecation timeline for shims (`cropability.io`, `cropability.genomics.pipeline|pileup|fastcall3`) | LogRef: pending
+- [ ] `CA-2212-00` GPU
+- [x] `CA-2212-01` DeviceManager | LogRef: 2026-05-21 / M1-GPU-001
+- [x] `CA-2212-02` Triton/PyTorch kernels | LogRef: 2026-05-21 / M1-GPU-002
+- [ ] `CA-2212-03` Multi-GPU DDP documentation and smoke test
+- [ ] `CA-2212-04` Kernel versus CPU benchmark
 
----
+#### 2.1.3 Delivery
 
-## 5. CLI and visualization
+- [ ] `CA-2213-00` Delivery
+- [x] `CA-2213-01` Development documentation suite | LogRef: 2026-05-21 / M1-DELIV-001
+- [x] `CA-2213-02` Progress tracking documentation | LogRef: 2026-05-21 / M1-DELIV-002
+- [ ] `CA-2213-03` PyPI / wheel release
+- [ ] `CA-2213-04` `0.2.0` release gate
 
-- [x] `M1-CLI-001` Core subcommands: `info`, `benchmark`, `snp`, `ld`, `gwas`, `align`, `pileup`, `call-variants` | LogRef: 2026-05-21 / M1-CLI-001
-- [ ] `M1-CLI-002` `cropability viz` or documented `cropability[viz]` plotting entry points | LogRef: pending
-- [ ] `M1-CLI-003` `--version` / structured JSON output for automation | LogRef: pending
+### 2.2 FastCall GPU heterogeneity
 
----
+- [ ] `CA-222-00` FastCall GPU heterogeneity
 
-## 6. Testing — [[doc/TESTING]]
+#### 2.2.1 JNI method
 
-- [x] `M1-TEST-001` Pytest layout, markers (`native`, `gpu`, `slow`), `conftest.py` fixtures | LogRef: 2026-05-21 / M1-TEST-001
-- [x] `M1-TEST-002` NGS + CLI parsing coverage (`test_ngs_*`, `test_cli.py`) | LogRef: 2026-05-21 / M1-TEST-002
-- [ ] `M1-TEST-003` GitHub Actions: CPU pytest + optional `cargo test` on push/PR | LogRef: pending
-- [ ] `M1-TEST-004` Checked-in or downloadable minimal BAM/FASTA fixture set for `@pytest.mark.native` | LogRef: pending
-- [ ] `M1-TEST-005` GPU CI job or documented manual GPU test checklist | LogRef: pending
+- [x] `CA-2221-01` JNI method | LogRef: vault
 
----
+#### 2.2.2 TorchScript method
 
-## 7. Delivery and documentation
+- [x] `CA-2222-00` TorchScript method | LogRef: vault
+- [x] `CA-2222-01` Test how sample size affects GPU speedup | LogRef: vault
+- [x] `CA-2222-02` Speed up likelihood calculation | LogRef: vault
+- [x] `CA-2222-03` Improve whole-program runtime | LogRef: vault
+- [x] `CA-2222-04` Resolve Python object cleanup in GPU memory | LogRef: vault
+- [x] `CA-2222-05` Design the new TorchScript approach | LogRef: vault
+- [x] `CA-2222-06` Import Java test path | LogRef: vault
+- [x] `CA-2222-07` Decide to drop Java and rewrite FastCall3 in Rust | LogRef: vault
 
-- [x] `M1-DELIV-001` Dev docs: `TESTING.md`, `RUST_DEVELOPMENT.md`, `PYTHON_DEVELOPMENT.md`, `DEPENDENCIES.md` | LogRef: 2026-05-21 / M1-DELIV-001
-- [x] `M1-DELIV-002` Progress tracking docs: `TODO.md`, `TODO_PROGRESS_LOG.md`, `TODO_PROGRESS_SYNC.md` | LogRef: 2026-05-21 / M1-DELIV-002
-- [ ] `M1-DELIV-003` PyPI / wheel publish checklist (maturin manylinux, optional extras matrix) | LogRef: pending
-- [ ] `M1-DELIV-004` Release gate for `0.2.0`: API stability review + changelog | LogRef: pending
+#### 2.2.3 Software refactor: rewrite FastCall3 in Rust
 
----
+- [ ] `CA-2223-00` Software refactor using Rust for FastCall3
 
-## 8. Backlog (post-M1)
+##### 2.2.3.1 Foundation rewrite
 
-- [ ] `M1-BACKLOG-001` GPU acceleration for additional genomics kernels (k-mer, alignment at scale)
-- [ ] `M1-BACKLOG-002` Tighter coupling with SirLearning/script variation-library outputs (assess/filter params)
-- [ ] `M1-BACKLOG-003` Optional distributed multi-node execution story (beyond single-node DDP)
+- [ ] `CA-2223-10` Foundation rewrite
+- [ ] `CA-2223-11` Variation-library integration
+- [ ] `CA-2223-12` Coupling with variation-library
+
+##### 2.2.3.2 Import samtools mpileup
+
+- [ ] `CA-2223-20` Import samtools mpileup
+- [x] `CA-2223-21` CLI pileup / call-variants | LogRef: 2026-05-21 / M1-NGS-004
+- [x] `CA-2223-22` In-process mpileup plus FastCall3-style calling | LogRef: 2026-05-21 / M1-NGS-003
+
+### 2.3 Personal genetics and breeding algorithms
+
+- [ ] `CA-223-00` Personal genetics and breeding algorithm implementation
+- [x] `CA-223-01` Variant/LD/GWAS engine | LogRef: 2026-05-21 / M1-GEN-001
+- [x] `CA-223-02` SmithWatermanGPU | LogRef: 2026-05-21 / M1-GEN-002
+- [ ] `CA-223-03` CRAM smoke test
+
+### 2.4 Visualization
+
+- [ ] `CA-224-00` Visualization
+- [ ] `CA-224-01` Visualization entry point
