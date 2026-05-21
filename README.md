@@ -10,26 +10,17 @@ optimized for **NVIDIA H100 PCIe** and **A2** dual-GPU setups while remaining CP
 ## Architecture overview
 
 ```
-cropability/
-├── gpu/           # GPU device management and distributed support (H100/A2 multi-GPU)
-├── kernels/       # Triton JIT GPU kernels
-│   ├── seq.py     #   Sequence encoding, GC content, reverse complement, k-mers
-│   ├── stats.py   #   Welford mean/variance, z-score, Pearson correlation
-│   ├── matrix.py  #   Symmetric matrix multiply, batched outer products
-│   └── pairwise.py#   Hamming distance matrix, Jaccard similarity
-├── genomics/      # Plant genomics algorithms
-│   ├── variant.py #   SNP/Indel calling
-│   ├── ld.py      #   Linkage disequilibrium (LD)
-│   ├── gwas.py    #   Genome-wide association study (GWAS)
-│   └── alignment.py#  Smith-Waterman alignment
-├── models/        # TorchScript models (for Java/C++ callers)
-├── io/            # FASTA/FASTQ/VCF I/O
-├── utils/         # Configuration, logging, timing
-└── cli/           # Command-line tools
+src/main/python/cropability/   # GPU kernels, viz, ngs facade, CLI (Python host)
+src/main/rust/               # CPU: I/O, NGS pipeline (PyO3 extension)
+src/main/resources/          # Config + private assets (gitignored private/)
+src/test/python/             # Pytest (see doc/TESTING.md)
+archive/legacy/pgl/          # Legacy reference only (not installed)
+doc/                         # Development and testing docs
 ```
 
-The Java integration layer (`src/main/java/`) loads TorchScript models via the PyTorch Java API
-and interoperates with Python GPU results.
+Single root `Cargo.toml` — no nested Rust test crates or TorchScript.
+
+**Python**: GPU compute + `cropability.viz`. **Rust**: I/O, pileup, variant pipeline, config orchestration (see `doc/RUST_DEVELOPMENT.md`).
 
 ---
 
@@ -43,21 +34,26 @@ and interoperates with Python GPU results.
 | PyTorch | ≥ 2.1 (CUDA 12.x) |
 | Triton | ≥ 2.1 |
 | CUDA Driver | ≥ 520 (H100 requires ≥ 525) |
-| Java (optional) | 11+ |
+| Rust (optional) | stable (PyO3 / maturin) |
 
 ### Install
 
+**Recommended — Conda** (Python, Rust, bioinformatics tools, and pip extras):
+
 ```bash
-# Clone the repository
 git clone https://github.com/example/CropAbility.git
 cd CropAbility
+conda env create -f environment.yml
+conda activate cropability
 
-# Install Python package (editable, with GPU + dev extras)
-pip install -e ".[gpu,dev]"
+# CPU-only (no CUDA): environment_cpu.yml
+# Then: maturin develop --release --features python,htslib && cargo test
+```
 
-# Or core dependencies only
-pip install -r requirements.txt
-pip install -e .
+**Pip only** (install Rust and samtools separately if using native layers):
+
+```bash
+pip install -e ".[gpu,dev,io,viz]"
 ```
 
 ### Basic usage
@@ -80,10 +76,6 @@ cropability pileup -r ref.fa -b sample1.bam sample2.bam -o cohort.mpileup
 
 # Variant calling pipeline (default hybrid: native mpileup + FastCall3 logic)
 cropability call-variants -r ref.fa -b sample1.bam sample2.bam -o cohort.vcf --mode hybrid
-
-# Export TorchScript models (for Java)
-cropability export --model add --output model.pt
-cropability export --model embedding --output embed.pt
 ```
 
 > NGS pipelines run inside CropAbility by default; no external `samtools`/`FastCall3` binaries required.
@@ -135,44 +127,24 @@ def train_fn(rank: int, world_size: int, **kwargs):
 launch_ddp(train_fn, num_gpus=2)
 ```
 
-### Java integration
+### Rust native extension (PyO3)
 
 ```bash
-# 1. Export model
-cropability export --model add --output model.pt
-
-# 2. Build Java
-mvn package -DskipTests
-
-# 3. Run integration test
-java -Djava.library.path=pytorch_java_libs \
-     -jar target/CropAbility-0.1.0-fat.jar model.pt
+maturin develop --release --features python,htslib
 ```
 
-```java
-try (TritonIntegration integration = new TritonIntegration("model.pt")) {
-    float[] x = {1.0f, 2.0f, 3.0f};
-    float[] y = {4.0f, 5.0f, 6.0f};
-    float[] result = integration.add(x, y);  // [5.0, 7.0, 9.0]
-}
-```
+See [doc/RUST_DEVELOPMENT.md](doc/RUST_DEVELOPMENT.md) for build steps and Python API.
 
 ---
 
 ## Testing
 
+See **[doc/TESTING.md](doc/TESTING.md)** for layout, markers, and CI-style commands.
+
 ```bash
-# All tests
-pytest
-
-# With coverage
-pytest --cov=cropability --cov-report=html
-
-# GPU-only tests (requires CUDA)
-pytest -m gpu
-
-# Parallel
-pytest -n auto
+pytest src/test/python
+maturin develop --release --features python,htslib
+pytest -m native
 ```
 
 ---
@@ -248,10 +220,9 @@ Triton GPU paths with PyTorch CPU fallback when CUDA is unavailable.
 
 ```bash
 pip install -e ".[dev]"
-ruff check cropability/ tests/
-mypy cropability/
-mvn compile
-mvn test && pytest
+pytest src/test/python
+cargo test
+ruff check src/main/python/cropability
 ```
 
 ---
@@ -271,4 +242,4 @@ MIT License — see [LICENSE](LICENSE)
 
 ## Acknowledgments
 
-Built with [OpenAI Triton](https://github.com/openai/triton), [PyTorch](https://pytorch.org), and the [PyTorch Java API](https://pytorch.org/javadoc/).
+Built with [OpenAI Triton](https://github.com/openai/triton), [PyTorch](https://pytorch.org), and Rust (PyO3 / maturin).

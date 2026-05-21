@@ -69,7 +69,10 @@ class TestDeviceManager:
         dm = DeviceManager().initialize()
         assert dm.num_gpus == torch.cuda.device_count()
 
-    def test_memory_stats_structure(self):
+    @pytest.mark.gpu
+    def test_memory_stats_structure(self, gpu_available):
+        if not gpu_available:
+            pytest.skip("CUDA not available")
         dm = DeviceManager().initialize()
         if dm.has_gpu:
             stats = dm.memory_stats()

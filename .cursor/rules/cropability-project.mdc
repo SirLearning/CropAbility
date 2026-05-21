@@ -1,39 +1,107 @@
 ---
-description: CropAbility repo layout, stack, and agent workflow
+description: CropAbility product architecture, publish scope, layout, and anti-patterns (canonical)
 alwaysApply: true
 ---
 
-# CropAbility project context
+# CropAbility — canonical project rules
 
-## What this repo is
+## Product goal
 
-GPU-accelerated plant genomics toolkit built on **PyTorch** and **Triton**, with optional **Java** integration via **TorchScript**.
+Build a **publishable** genomics toolkit:
 
-## Layout
+- **Installed package**: `cropability` only (`pyproject.toml` → `src/main/python/cropability/`).
+- **User interface**: `cropability` CLI and Python API.
+- **Not part of the wheel**: tests (`src/test/`), docs (`doc/`), legacy (`archive/`), conda env files.
 
-| Path | Purpose |
-|------|---------|
-| `src/main/python/cropability/` | Main Python package |
-| `src/main/python/pgl/` | Legacy PGL ops and demos |
-| `src/main/java/com/example/triton/` | Java TorchScript integration |
-| `src/main/torchscript/` | Exported `.pt` models |
-| `src/test/python/` | Pytest suite |
-| `src/test/java/` | JUnit tests |
-| `docs/` | Developer documentation |
+## Architecture (do not regress)
 
-## Commands
+**Python host → Rust extension** via maturin / PyO3 (`cropability.native._core`).
 
-```bash
-pip install -e ".[gpu,dev]"
-pytest src/test/python
-cropability info
-mvn test
+| Layer | Location | Owns |
+|-------|----------|------|
+| Python | `src/main/python/cropability/` | PyTorch GPU, Triton kernels, GPU `genomics/`, `viz/`, `cli/` |
+| Python facade | `cropability/ngs/` | Thin CPU/NGS API → `_core` (pipeline, pileup, fastcall3, I/O types) |
+| Rust | `src/main/rust/` | CPU I/O (`io/`), NGS (`genomics/`), PyO3 in `python.rs` |
+
+**GPU** (flexible models, training, kernels) stays in **Python**.  
+**CPU / NGS** stays in **Rust**. Do **not** use TorchScript or Rust libtorch for inference. Do **not** embed Python in Rust for PyTorch.
+
+### Explicitly out of scope (do not reintroduce)
+
+- **Java** / `pom.xml` / `src/main/java` / `src/test/java`
+- **TorchScript** — no `cropability/models/`, no CLI `export` for `.pt`, no `.pt` for Rust loading
+- **Rust libtorch** — no `tch`, no `torch` Cargo feature, no `integration_test`, no `simulated.rs`
+- **Root `resources/`** — runtime files under `src/main/resources/` only (`private/` gitignored)
+- **Rust → Python** for PyTorch (wrong direction for this repo)
+- **Nested Rust crates** — no `src/main/rust/src/`, `torch/`, `ngs/Cargo.toml`, extra `bin/` for torch tests
+- **Second Rust test crate** — no `src/test/rust/`, no `[workspace]` members for tests unless user requests split
+- **`scripts/`** — no dev/benchmark scripts; use pytest in `src/test/python/`
+- **Docs under `src/`** — no `README.md` in `src/test/`; project docs live in `doc/`
+- **Repo `lib/`** — vendored libtorch / `pytorch_java_libs`; use Conda `pytorch` instead (see `doc/DEPENDENCIES.md`)
+- **Merging `archive/` into `src/`** — legacy PGL is not part of the product; port ideas into `cropability/` instead
+
+## Repository layout
+
+```
+Cargo.toml                    # single crate: cropability-native
+pyproject.toml                # Python package + maturin (keep separate from Cargo)
+environment.yml / environment_cpu.yml
+
+src/main/python/cropability/  # ONLY installable Python code
+src/main/rust/                # flat: lib.rs, python.rs, io/, genomics/
+src/main/resources/           # config; private/ gitignored; no bundled ML checkpoints
+src/test/python/              # pytest only (see doc/TESTING.md)
+archive/legacy/pgl/           # historical PGL — not packaged, not maintained as product API
+doc/                          # TESTING.md, RUST_DEVELOPMENT.md, PYTHON_DEVELOPMENT.md
+README.md                     # user-facing overview
 ```
 
-## Agent guidelines
+## Documentation policy
 
-- Follow `english-only.mdc` for all new docs and comments.
-- Prefer changes under `src/main/python/cropability/` for new Python features.
-- Do not commit `src/main/resources/private/`.
-- Minimize scope: match existing naming and patterns in the file you edit.
-- Run relevant tests after substantive code changes.
+| Type | Path |
+|------|------|
+| Testing guide | `doc/TESTING.md` |
+| Rust / PyO3 | `doc/RUST_DEVELOPMENT.md` |
+| Python API | `doc/PYTHON_DEVELOPMENT.md` (legacy PGL sections = archive reference only) |
+| Agent rules | `AGENTS.md`, `.cursor/rules/*.mdc` |
+
+Do **not** add explanatory README files under `src/test/` or `src/main/python/`.
+
+## Build and test
+
+```bash
+conda env create -f environment.yml && conda activate cropability
+pip install -e ".[gpu,dev,io,rust]"
+maturin develop --release --features python,htslib
+pytest src/test/python
+cargo test
+```
+
+- Do **not** merge `pyproject.toml` and `Cargo.toml`.
+- NGS tests require `_core`; use `@pytest.mark.native` and `pytest.importorskip` as needed.
+
+## Where to add code
+
+| Task | Target |
+|------|--------|
+| GPU kernel / PyTorch | `cropability/kernels/`, `cropability/gpu/`, GPU `cropability/genomics/` |
+| Plotting | `cropability/viz/` |
+| NGS facade | `cropability/ngs/` — thin only |
+| Rust I/O or pipeline | `src/main/rust/` + `python.rs` + optional `ngs/` wrapper |
+| CLI subcommand | `cropability/cli/main.py` |
+| Config / logging | `cropability/utils/` |
+| Tests | `src/test/python/` — pytest, markers `native` / `gpu` / `slow` |
+| Dev / benchmark checks | Same — **not** `scripts/` |
+
+**Deprecated shims** (re-export only; new code uses `cropability.ngs`):
+
+- `cropability/io/*` → `cropability.ngs.io`
+- `cropability/genomics/pipeline|pileup|fastcall3` → `cropability.ngs.*`
+
+## Agent workflow
+
+- Follow `english-only.mdc`.
+- Prefer minimal, focused diffs.
+- Do not commit secrets or `src/main/resources/private/`.
+- Do not create git commits unless the user asks.
+- Read `doc/TESTING.md` before changing tests; read `doc/RUST_DEVELOPMENT.md` before changing Rust.

@@ -1,0 +1,58 @@
+# CropAbility — CPU-only Conda environment (Python + Rust + bioinformatics)
+#
+# Create / update:
+#   conda env create -f environment_cpu.yml
+#   conda env update -f environment_cpu.yml --prune
+#   conda activate cropability-cpu
+#
+# After activate — Python + Rust native layer:
+#   maturin develop --release --features python,htslib
+#   cargo test
+#
+# No CUDA / no Triton GPU kernels. For plots: pip install -e ".[viz]"
+
+name: cropability-cpu
+
+channels:
+  - conda-forge
+  - bioconda
+  - pytorch
+  - defaults
+
+variables:
+  RUST_BACKTRACE: "1"
+
+dependencies:
+  # --- Runtimes ---
+  - python=3.11
+  - rust>=1.75
+
+  # --- Rust / native build ---
+  - cmake
+  - pkg-config
+
+  # --- Bioinformatics CLI + Rust HTSlib linking ---
+  - samtools
+  - bcftools
+  - bedtools
+  - htslib
+
+  # --- Python (conda) ---
+  - numpy>=1.24
+  - pyyaml>=6
+  - pytorch>=2.1
+  - cpuonly
+  - pysam>=0.21
+  - biopython>=1.81
+
+  # --- Test & lint ---
+  - pytest>=7.4
+  - pytest-cov>=4.1
+  - pytest-xdist>=3.3
+  - ruff>=0.1
+  - matplotlib>=3.7
+
+  - pip
+  - pip:
+      - maturin>=1.4
+      - -e ".[dev,io,rust]"

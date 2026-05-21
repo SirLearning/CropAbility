@@ -1,0 +1,50 @@
+---
+description: Publishable Python package (GPU host, ngs facade, CLI)
+globs: src/main/python/cropability/**/*
+alwaysApply: false
+---
+
+# CropAbility Python rules
+
+## Publishable package
+
+- **Only** `cropability` is installed (`pyproject.toml`: `include = ["cropability*"]`).
+- Entry point: `cropability = cropability.cli.main:main`.
+- Do not add sibling packages under `src/main/python/`.
+- Legacy PGL remains in `archive/legacy/pgl/` — never move into the install tree.
+
+## Layering
+
+| Module | Role |
+|--------|------|
+| `gpu/`, `kernels/` | PyTorch / Triton GPU compute |
+| `genomics/` | GPU genomics (variant, LD, GWAS, alignment) — **not** CPU NGS |
+| `ngs/` | Thin facade → `cropability.native._core` |
+| `viz/` | Plotting only |
+| `cli/` | User-facing subcommands |
+| `utils/` | Config, logging, timers |
+| `native/` | Import `_core` (maturin-built) |
+
+## Forbidden in Python product code
+
+- TorchScript export modules or CLI `export` for `.pt`
+- Duplicating pileup/VCF/FASTA CPU logic (belongs in Rust)
+- Full Python fallback when `_core` is missing (document maturin build instead)
+
+## Imports (preferred)
+
+```python
+from cropability.ngs import VariantPipeline, FastaReader
+from cropability.gpu import get_device_manager
+from cropability.kernels.seq import encode_sequences
+```
+
+Deprecated shims (`cropability.io`, `cropability.genomics.pipeline`) — touch only to maintain re-exports.
+
+## Optional extras
+
+`[gpu]` triton · `[io]` pysam/biopython · `[rust]` maturin · `[viz]` matplotlib/seaborn/plotly
+
+## Tests for changes
+
+Add or update tests under `src/test/python/` per `doc/TESTING.md` — not under `scripts/`.

@@ -1,0 +1,28 @@
+# cropability-native — PyO3 extension (Python host → Rust CPU / I/O / NGS)
+#
+#   maturin develop --release --features python,htslib
+#   cargo test
+
+[package]
+name = "cropability-native"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+authors = ["CropAbility Team"]
+description = "Native Rust layer: I/O and NGS pipeline for CropAbility (Python handles GPU)"
+
+[lib]
+name = "cropability_native"
+path = "src/main/rust/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = []
+python = ["dep:pyo3"]
+htslib = ["dep:rust-htslib", "python"]
+full = ["python", "htslib"]
+
+[dependencies]
+anyhow = "1.0"
+pyo3 = { version = "0.22", optional = true, features = ["extension-module"] }
+rust-htslib = { version = "0.47", optional = true, default-features = false }

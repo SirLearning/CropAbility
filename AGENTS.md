@@ -1,43 +1,90 @@
 # Agent instructions (CropAbility)
 
-This file is the **portable entry point** for AI coding agents (Cursor, Codex, Claude Code, etc.).  
-Cursor loads the same policies from [`.cursor/rules/`](.cursor/rules/).
+CropAbility is a **publishable** plant-genomics software product: a Python package with an optional Rust native extension. Agents must preserve this architecture and avoid reintroducing removed patterns.
 
-## Language policy (required)
+## Product model
 
-**All project documentation and code comments must be written in English.**
+| Concern | Decision |
+|---------|----------|
+| **Host runtime** | Python (PyTorch / Triton for GPU) |
+| **Native extension** | Rust via maturin → `cropability.native._core` |
+| **Shipped to users** | Only `cropability` from `src/main/python/cropability/` (wheel/sdist) |
+| **User entry point** | `cropability` CLI (`pyproject.toml` `[project.scripts]`) |
+| **Not shipped** | `src/test/`, `doc/`, `archive/`, `environment*.yml`, root `Cargo.toml` build artifacts |
 
-See [.cursor/rules/english-only.mdc](.cursor/rules/english-only.mdc) for full rules and exceptions (e.g. locale-specific document templates).
+## Architecture (binding)
 
-## Project rules (Cursor)
+**Python host → Rust extension.** No Java. No TorchScript. No libtorch in Rust. No Rust embedding Python for PyTorch.
 
-| Rule file | Scope |
-|-----------|--------|
-| [english-only.mdc](.cursor/rules/english-only.mdc) | Always apply — English docs & comments |
-| [cropability-project.mdc](.cursor/rules/cropability-project.mdc) | Always apply — repo layout & workflow |
-
-Non-Cursor agents: read both `.mdc` files above; treat their body (below the YAML frontmatter) as binding instructions.
-
-## Repository overview
-
-- **Python package**: `src/main/python/cropability/` — genomics, GPU kernels, CLI (`cropability` command)
-- **Java integration**: `src/main/java/com/example/triton/` — TorchScript via PyTorch Java API
-- **Tests**: `src/test/python/`, `src/test/java/`
-- **Docs**: `docs/`, root `README.md`
-- **Ignored**: `src/main/resources/private/` (see `.gitignore`)
-
-## Build & test
-
-```bash
-pip install -e ".[gpu,dev]"
-pytest src/test/python
-mvn test
-cropability info
+```
+src/main/python/cropability/     GPU: gpu/, kernels/, genomics/, viz/, cli/
+cropability/ngs/                 CPU/NGS thin facade → native._core
+src/main/rust/                   CPU: io/, genomics/, python.rs (PyO3)
+src/main/resources/              Runtime config; private/ gitignored
 ```
 
-## Conventions for agents
+- **GPU** inference/training: Python only (`torch`, optional `triton`).
+- **CPU / NGS** (FASTA, BAM, pileup, variant pipeline): Rust implementation; Python `ngs/` is a thin wrapper.
+- **Resources**: `src/main/resources/` only (not repo-root `resources/`). Model checkpoints are **not** vendored in the repo.
 
-1. Use English for new comments, docstrings, docs, and CLI help.
-2. Keep diffs focused; follow patterns in the nearest module.
-3. Do not add secrets or private PDFs under version control.
-4. Prefer `src/main/python/cropability/` for new Python code over legacy root `cropability/` copies.
+## Build
+
+| File | Role |
+|------|------|
+| `pyproject.toml` | Python package, pytest, maturin config — **do not merge with Cargo** |
+| `Cargo.toml` | **Single** crate `cropability-native` at repo root |
+| `environment.yml` / `environment_cpu.yml` | Conda (recommended) |
+
+```bash
+conda env create -f environment.yml && conda activate cropability
+pip install -e ".[gpu,dev,io,rust]"
+maturin develop --release --features python,htslib
+pytest src/test/python
+cargo test   # optional
+```
+
+## Testing & docs (where things live)
+
+| Content | Location | Never put here |
+|---------|----------|----------------|
+| Pytest suite | `src/test/python/` | `scripts/`, `src/test/python/README.md` |
+| Test documentation | `doc/TESTING.md` | Under `src/` |
+| Rust/Python dev guides | `doc/RUST_DEVELOPMENT.md`, `doc/PYTHON_DEVELOPMENT.md`, `doc/DEPENDENCIES.md` | — |
+| User overview | `README.md` | — |
+| Legacy PGL reference | `archive/legacy/pgl/` | Install tree or `scripts/` |
+
+- All validation → **pytest** in `src/test/python/` (`native`, `gpu`, `slow` markers).
+- No `scripts/` folder; no one-off dev scripts in the repo root.
+
+## Cursor rules (apply all)
+
+| File | When |
+|------|------|
+| [`.cursor/rules/cropability-project.mdc`](.cursor/rules/cropability-project.mdc) | Always |
+| [`.cursor/rules/english-only.mdc`](.cursor/rules/english-only.mdc) | Always |
+| [`.cursor/rules/cropability-python.mdc`](.cursor/rules/cropability-python.mdc) | `src/main/python/cropability/**` |
+| [`.cursor/rules/cropability-rust.mdc`](.cursor/rules/cropability-rust.mdc) | `src/main/rust/**` |
+| [`.cursor/rules/cropability-tests.mdc`](.cursor/rules/cropability-tests.mdc) | `src/test/python/**` |
+| [`.cursor/rules/cropability-docs.mdc`](.cursor/rules/cropability-docs.mdc) | `doc/**` |
+
+For non-Cursor agents: read every `.mdc` file; the markdown body below each YAML frontmatter block is binding.
+
+## Do not reintroduce
+
+- Java, `pom.xml`, `src/main/java`, `src/test/java`
+- TorchScript export, `cropability/models/`, CLI `export` for `.pt`, `.pt` artifacts for Rust
+- Rust `tch` / libtorch, `torch` Cargo feature, `integration_test`, `simulated.rs`
+- Root `resources/` or repo `lib/` (vendored libtorch / Java JNI)
+- `scripts/` or dev benchmark scripts outside pytest
+- Nested Rust workspaces, `src/test/rust/Cargo.toml`, `src/main/rust/src/`, child `Cargo.toml` under `rust/`
+- README or architecture docs under `src/test/` or `src/`
+- Fat CPU/NGS logic duplicated in Python (belongs in Rust + `ngs/` facade)
+- Rust calling Python to run PyTorch
+
+## Agent behavior
+
+- Follow **english-only** for docs, comments, CLI help, and rules.
+- **Minimal diffs**; do not refactor `archive/legacy/` unless asked.
+- Do not commit `src/main/resources/private/` or secrets.
+- Do not `git commit` unless the user explicitly asks.
+- New features: GPU → Python; CPU/NGS → Rust + thin `ngs/`; tests → `src/test/python/`; docs → `doc/`.

@@ -11,7 +11,6 @@ Subcommands:
   align     — Batch sequence alignment
   pileup    — Run native mpileup (built into CropAbility)
   call-variants — Run NGS variant detection pipeline
-  export    — Export TorchScript models
   benchmark — GPU performance benchmark
 """
 
@@ -120,7 +119,7 @@ def cmd_benchmark(args: argparse.Namespace) -> int:
 
 def cmd_snp(args: argparse.Namespace) -> int:
     """Detect SNPs from aligned FASTA files."""
-    from cropability.io.fasta import FastaReader
+    from cropability.ngs.io import FastaReader
     from cropability.genomics.variant import VariantCaller
     from cropability.gpu import get_device_manager
 
@@ -157,28 +156,6 @@ def cmd_snp(args: argparse.Namespace) -> int:
     return 0
 
 
-def cmd_export(args: argparse.Namespace) -> int:
-    """Export a TorchScript model."""
-    import torch
-    from cropability.models.torchscript import AddModule, GenomicEmbedding, export_model
-
-    model_map = {
-        "add": (AddModule, lambda: (torch.randn(100), torch.randn(100))),
-        "embedding": (GenomicEmbedding, lambda: (torch.randint(0, 5, (4, 256)),)),
-    }
-
-    if args.model not in model_map:
-        print(f"ERROR: Unknown model '{args.model}'. Choose from: {list(model_map)}")
-        return 1
-
-    cls, example_fn = model_map[args.model]
-    model = cls()
-    example = example_fn()
-    path = export_model(model, args.output, example_inputs=example)
-    print(f"Model exported to: {path}")
-    return 0
-
-
 def cmd_ld(args: argparse.Namespace) -> int:
     """Compute LD matrix (example using a random genotype matrix)."""
     import torch
@@ -203,7 +180,7 @@ def cmd_ld(args: argparse.Namespace) -> int:
 
 def cmd_pileup(args: argparse.Namespace) -> int:
     """Run native mpileup and write site summary text."""
-    from cropability.genomics.pipeline import QCThresholds, VariantPipeline
+    from cropability.ngs.pipeline import QCThresholds, VariantPipeline
 
     qc = QCThresholds(
         min_depth=args.min_depth,
@@ -228,7 +205,7 @@ def cmd_pileup(args: argparse.Namespace) -> int:
 
 def cmd_call_variants(args: argparse.Namespace) -> int:
     """Run native variant detection pipeline (mpileup / fastcall3 / hybrid)."""
-    from cropability.genomics.pipeline import QCThresholds, VariantPipeline
+    from cropability.ngs.pipeline import QCThresholds, VariantPipeline
 
     qc = QCThresholds(
         min_depth=args.min_depth,
@@ -292,7 +269,7 @@ def build_parser() -> argparse.ArgumentParser:
     exp.add_argument("-m", "--model", default="add",
                      choices=["add", "embedding"],
                      help="Model type")
-    exp.add_argument("-o", "--output", default="model.pt", help="Output path")
+    exp.add_argument("-o", "--output", default=DEFAULT_ADD_MODEL, help="Output path")
 
     # ld
     ld = sub.add_parser("ld", help="Compute linkage disequilibrium matrix")
@@ -337,7 +314,6 @@ _COMMANDS = {
     "info": cmd_info,
     "benchmark": cmd_benchmark,
     "snp": cmd_snp,
-    "export": cmd_export,
     "ld": cmd_ld,
     "pileup": cmd_pileup,
     "call-variants": cmd_call_variants,

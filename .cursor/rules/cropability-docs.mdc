@@ -1,0 +1,34 @@
+---
+description: Documentation conventions — all project docs under doc/
+globs: doc/**/*
+alwaysApply: false
+---
+
+# CropAbility documentation rules
+
+## Location
+
+All **project documentation** belongs under **`doc/`** or root **`README.md`**:
+
+| Doc | Purpose |
+|-----|---------|
+| `doc/TESTING.md` | Pytest layout, markers, publish vs dev assets |
+| `doc/RUST_DEVELOPMENT.md` | PyO3, Cargo features, maturin |
+| `doc/PYTHON_DEVELOPMENT.md` | Python API; legacy PGL blocks are archive reference only |
+| `README.md` | User-facing install and usage |
+
+Do **not** create `README.md` or architecture notes under `src/test/` or `src/main/python/`.
+
+## Language
+
+Follow `english-only.mdc` for all doc text.
+
+## Content alignment
+
+When updating docs, reflect current architecture:
+
+- Python host → Rust extension; no Java, no TorchScript, no `scripts/`.
+- Single root `Cargo.toml`; tests in `src/test/python/`.
+- Resources in `src/main/resources/`; models not vendored in repo.
+
+Keep `doc/PYTHON_DEVELOPMENT.md` legacy PGL sections clearly labeled as historical, not the supported API.

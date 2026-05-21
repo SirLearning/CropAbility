@@ -1,0 +1,41 @@
+---
+description: Pytest conventions for src/test/python (see doc/TESTING.md)
+globs: src/test/python/**/*
+alwaysApply: false
+---
+
+# CropAbility test rules
+
+Full guide: **`doc/TESTING.md`** (do not duplicate as README under `src/test/`).
+
+## Location
+
+- All Python tests: **`src/test/python/`** only.
+- Shared fixtures: `conftest.py`.
+- No `scripts/` for checks; no `src/test/rust/` package.
+
+## Markers (`pyproject.toml`)
+
+| Marker | Use |
+|--------|-----|
+| `native` | Needs `cropability.native._core` (after `maturin develop --features python,htslib`) |
+| `gpu` | Needs CUDA |
+| `slow` | Long benchmarks (reserved) |
+
+## File map
+
+| File | Tests |
+|------|--------|
+| `test_config.py` | `utils.config` |
+| `test_gpu_manager.py` | `gpu.device_manager` |
+| `test_kernels_seq.py` / `test_kernels_stats.py` | `kernels.*` (CPU ok) |
+| `test_genomics.py` | GPU `genomics/*` (CPU ok) |
+| `test_ngs_io.py` | `ngs.io` — VCF pure Python; FASTA `@pytest.mark.native` |
+| `test_ngs_pipeline.py` | `ngs.pipeline`, BAM — module `importorskip` + `native` mark |
+| `test_cli.py` | CLI parsing (no `export` subcommand) |
+
+## Adding tests
+
+- Import from **`cropability.ngs`**, not deprecated `cropability.io` / `genomics.pipeline`.
+- Heavy GPU work: `@pytest.mark.gpu` and skip when no CUDA.
+- Do not add TorchScript round-trip or `.pt` export tests unless product scope changes.

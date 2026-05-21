@@ -1,0 +1,46 @@
+---
+description: Rust native extension (PyO3 CPU/NGS only, no libtorch)
+globs: src/main/rust/**/*
+alwaysApply: false
+---
+
+# CropAbility Rust rules
+
+## Role in the product
+
+Rust is a **native extension** for CPU-bound work (I/O, NGS). It is **not** a second application runtime and does **not** run PyTorch or TorchScript.
+
+## Crate (single)
+
+- Root **`Cargo.toml`** only — `cropability-native`, `path = src/main/rust/lib.rs`.
+- `crate-type = ["cdylib", "rlib"]` for maturin.
+- Features: `python`, `htslib`, `full` — **never** add `torch` or `tch`.
+
+## Layout (flat)
+
+```
+src/main/rust/
+  lib.rs
+  python.rs    # #[pymodule] fn _core
+  io/
+  genomics/
+```
+
+Forbidden paths: `src/main/rust/src/`, `torch/`, `bin/integration_test.rs`, nested `Cargo.toml`.
+
+## PyO3 contract
+
+- Exposed as `cropability.native._core` (`pyproject.toml` `[tool.maturin]`).
+- Implement in Rust → register in `python.rs` → thin wrapper in `cropability/ngs/` if needed.
+- Keep the public `_core` surface small and stable.
+
+## Scope
+
+- FASTA/BAM/VCF, pileup, FastCall3, pipeline modes (`mpileup`, `fastcall3`, `hybrid`).
+- No `CModule`, no libtorch, no calling Python from Rust.
+
+## Tests
+
+- `#[cfg(test)]` in modules or repo-root `tests/*.rs` using the **same** `Cargo.toml`.
+- No `src/test/rust/` sub-crate.
+- Python integration tests for `_core` live in `src/test/python/` (`@pytest.mark.native`).

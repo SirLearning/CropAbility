@@ -48,6 +48,9 @@ io = [
     "pysam>=0.21.0",      # BAM/CRAM support (optional)
     "biopython>=1.81",    # extended format support (optional)
 ]
+rust = [
+    "maturin>=1.4",       # build cropability-native PyO3 extension (root Cargo.toml)
+]
 viz = [
     "matplotlib>=3.7",
     "seaborn>=0.12",
@@ -65,8 +68,11 @@ Homepage = "https://github.com/example/CropAbility"
 Repository = "https://github.com/example/CropAbility"
 Issues = "https://github.com/example/CropAbility/issues"
 
+[tool.setuptools]
+package-dir = { "" = "src/main/python" }
+
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["src/main/python"]
 include = ["cropability*"]
 
 [tool.setuptools.package-data]
@@ -90,11 +96,12 @@ known-first-party = ["cropability"]
 # Pytest
 # ---------------------------------------------------------------------------
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["src/test/python"]
 addopts = "-v --tb=short"
 markers = [
     "gpu: Tests requiring CUDA GPU",
     "slow: Long-running tests",
+    "native: Tests requiring cropability.native._core (maturin build)",
 ]
 
 # ---------------------------------------------------------------------------
@@ -116,3 +123,12 @@ python_version = "3.9"
 warn_return_any = true
 warn_unused_configs = true
 ignore_missing_imports = true
+
+# ---------------------------------------------------------------------------
+# Maturin (single Rust crate → cropability.native._core)
+# ---------------------------------------------------------------------------
+[tool.maturin]
+manifest-path = "Cargo.toml"
+module-name = "cropability.native._core"
+python-source = "src/main/python"
+features = ["python", "htslib"]
