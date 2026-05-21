@@ -264,13 +264,6 @@ def build_parser() -> argparse.ArgumentParser:
     snp.add_argument("--min-af", type=float, default=0.05, help="Minimum alternate allele frequency")
     snp.add_argument("--min-depth", type=int, default=10, help="Minimum coverage depth")
 
-    # export
-    exp = sub.add_parser("export", help="Export TorchScript model")
-    exp.add_argument("-m", "--model", default="add",
-                     choices=["add", "embedding"],
-                     help="Model type")
-    exp.add_argument("-o", "--output", default=DEFAULT_ADD_MODEL, help="Output path")
-
     # ld
     ld = sub.add_parser("ld", help="Compute linkage disequilibrium matrix")
     ld.add_argument("--n-samples", type=int, default=200)

@@ -18,7 +18,8 @@ Master execution checklist for the **CropAbility** publishable genomics toolkit
 
 - Mark `[x]` only for items checked in the dated vault TODO source.
 - Repository engineering completions should keep a `LogRef` to
-  `doc/TODO_PROGRESS_LOG.md` when one exists.
+  `doc/TODO_PROGRESS_LOG.md` when one exists (heading slug `YYYY-MM-DD / CA-…`,
+  or `baseline rollup` for items covered only by the pre-tracker rollup).
 - Historical exploration items that are complete only in the vault use
   `LogRef: vault`.
 
@@ -41,28 +42,28 @@ Master execution checklist for the **CropAbility** publishable genomics toolkit
 #### 2.1.1 Foundation
 
 - [ ] `CA-2211-00` Foundation
-- [x] `CA-2211-01` Canonical repository layout | LogRef: 2026-05-21 / M1-FOUND-001
-- [x] `CA-2211-02` Agent and English-only policy | LogRef: 2026-05-21 / M1-FOUND-002
-- [x] `CA-2211-03` One-shot installation path | LogRef: 2026-05-21 / M1-FOUND-003
-- [x] `CA-2211-04` Native `.so` git hygiene | LogRef: 2026-05-21 / M1-FOUND-004
+- [x] `CA-2211-01` Canonical repository layout | LogRef: 2026-05-21 / CA-2211-01
+- [x] `CA-2211-02` Agent and English-only policy | LogRef: 2026-05-21 / CA-2211-02
+- [x] `CA-2211-03` One-shot installation path | LogRef: 2026-05-21 / CA-2211-03
+- [x] `CA-2211-04` Native `.so` git hygiene | LogRef: 2026-05-21 / CA-2211-04
 - [ ] `CA-2211-05` Confirm public GitHub remote and README clone URL
 - [ ] `CA-2211-06` `cropability.yaml` plus environment variable validation
-- [x] `CA-2211-07` Rust I/O plus PyO3 native extension | LogRef: 2026-05-21 / M1-NGS-001
-- [x] `CA-2211-08` Pytest layout and markers | LogRef: 2026-05-21 / M1-TEST-001
+- [x] `CA-2211-07` Rust I/O plus PyO3 native extension | LogRef: baseline rollup
+- [x] `CA-2211-08` Pytest layout and markers | LogRef: baseline rollup
 
 #### 2.1.2 GPU
 
 - [ ] `CA-2212-00` GPU
-- [x] `CA-2212-01` DeviceManager | LogRef: 2026-05-21 / M1-GPU-001
-- [x] `CA-2212-02` Triton/PyTorch kernels | LogRef: 2026-05-21 / M1-GPU-002
+- [x] `CA-2212-01` DeviceManager | LogRef: baseline rollup
+- [x] `CA-2212-02` Triton/PyTorch kernels | LogRef: baseline rollup
 - [ ] `CA-2212-03` Multi-GPU DDP documentation and smoke test
 - [ ] `CA-2212-04` Kernel versus CPU benchmark
 
 #### 2.1.3 Delivery
 
 - [ ] `CA-2213-00` Delivery
-- [x] `CA-2213-01` Development documentation suite | LogRef: 2026-05-21 / M1-DELIV-001
-- [x] `CA-2213-02` Progress tracking documentation | LogRef: 2026-05-21 / M1-DELIV-002
+- [x] `CA-2213-01` Development documentation suite | LogRef: baseline rollup
+- [x] `CA-2213-02` Progress tracking documentation | LogRef: 2026-05-21 / CA-2213-02
 - [ ] `CA-2213-03` PyPI / wheel release
 - [ ] `CA-2213-04` `0.2.0` release gate
 
@@ -98,14 +99,14 @@ Master execution checklist for the **CropAbility** publishable genomics toolkit
 ##### 2.2.3.2 Import samtools mpileup
 
 - [ ] `CA-2223-20` Import samtools mpileup
-- [x] `CA-2223-21` CLI pileup / call-variants | LogRef: 2026-05-21 / M1-NGS-004
-- [x] `CA-2223-22` In-process mpileup plus FastCall3-style calling | LogRef: 2026-05-21 / M1-NGS-003
+- [x] `CA-2223-21` CLI pileup / call-variants | LogRef: 2026-05-21 / CA-2223-21
+- [x] `CA-2223-22` In-process mpileup plus FastCall3-style calling | LogRef: 2026-05-21 / CA-2223-22
 
 ### 2.3 Personal genetics and breeding algorithms
 
 - [ ] `CA-223-00` Personal genetics and breeding algorithm implementation
-- [x] `CA-223-01` Variant/LD/GWAS engine | LogRef: 2026-05-21 / M1-GEN-001
-- [x] `CA-223-02` SmithWatermanGPU | LogRef: 2026-05-21 / M1-GEN-002
+- [x] `CA-223-01` Variant/LD/GWAS engine | LogRef: baseline rollup
+- [x] `CA-223-02` SmithWatermanGPU | LogRef: baseline rollup
 - [ ] `CA-223-03` CRAM smoke test
 
 ### 2.4 Visualization
