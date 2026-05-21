@@ -5,6 +5,10 @@ __pycache__
 out/
 .idea/
 
+# Native extension (built by maturin; platform-specific)
+src/main/python/cropability/native/_core*.so
+src/main/python/cropability/native/_core*.pyd
+
 # Rust / Cargo (workspace target/ at repo root)
 /target/
 
