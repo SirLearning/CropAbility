@@ -12,6 +12,9 @@ All **project documentation** belongs under **`doc/`** or root **`README.md`**:
 
 | Doc | Purpose |
 |-----|---------|
+| `doc/TODO.md` | Master M1 checklist (`M1-*` IDs); checkbox truth source |
+| `doc/TODO_PROGRESS_LOG.md` | Dated completion log (required for each closed item) |
+| `doc/TODO_PROGRESS_SYNC.md` | Vault / GitHub sync mapping (Obsidian `3.CropAbility/`) |
 | `doc/TESTING.md` | Pytest layout, markers, publish vs dev assets |
 | `doc/RUST_DEVELOPMENT.md` | PyO3, Cargo features, maturin |
 | `doc/PYTHON_DEVELOPMENT.md` | Python API; legacy PGL blocks are archive reference only |
