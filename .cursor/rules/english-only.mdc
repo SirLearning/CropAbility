@@ -1,0 +1,27 @@
+---
+description: Require English for all project documentation and code comments
+alwaysApply: true
+---
+
+# English-only project language
+
+Write and maintain **all** of the following in **English**:
+
+- README and docs under `docs/`
+- Module/class/function docstrings
+- Inline code comments
+- Commit messages and PR descriptions (when contributing)
+- User-facing CLI help strings and log messages in library code
+- `AGENTS.md` and `.cursor/rules/` content
+
+## Exceptions
+
+- **Locale-specific data or templates** (e.g. Chinese text inside a generated birth-certificate document) may stay in the target language; add a short English comment explaining why.
+- **Third-party file names** — do not rename files on disk unless asked.
+- **Private resources** under `src/main/resources/private/` are not versioned.
+
+## Style
+
+- Prefer clear, concise technical English (US spelling is fine).
+- Keep bilingual *tags* out of docstrings; use English only.
+- When editing existing Chinese text in docs or comments, translate it rather than leaving mixed language.

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "cropability"
 version = "0.1.0"
-description = "植物基因组高性能GPU计算框架 — Plant Genomics HPC Framework"
+description = "High-performance GPU computing framework for plant genomics"
 readme = "README.md"
 license = { text = "MIT" }
 authors = [

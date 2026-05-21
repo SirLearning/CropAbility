@@ -1,0 +1,39 @@
+---
+description: CropAbility repo layout, stack, and agent workflow
+alwaysApply: true
+---
+
+# CropAbility project context
+
+## What this repo is
+
+GPU-accelerated plant genomics toolkit built on **PyTorch** and **Triton**, with optional **Java** integration via **TorchScript**.
+
+## Layout
+
+| Path | Purpose |
+|------|---------|
+| `src/main/python/cropability/` | Main Python package |
+| `src/main/python/pgl/` | Legacy PGL ops and demos |
+| `src/main/java/com/example/triton/` | Java TorchScript integration |
+| `src/main/torchscript/` | Exported `.pt` models |
+| `src/test/python/` | Pytest suite |
+| `src/test/java/` | JUnit tests |
+| `docs/` | Developer documentation |
+
+## Commands
+
+```bash
+pip install -e ".[gpu,dev]"
+pytest src/test/python
+cropability info
+mvn test
+```
+
+## Agent guidelines
+
+- Follow `english-only.mdc` for all new docs and comments.
+- Prefer changes under `src/main/python/cropability/` for new Python features.
+- Do not commit `src/main/resources/private/`.
+- Minimize scope: match existing naming and patterns in the file you edit.
+- Run relevant tests after substantive code changes.
