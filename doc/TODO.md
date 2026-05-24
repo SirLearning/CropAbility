@@ -2,7 +2,7 @@
 
 Master execution checklist for the **CropAbility** publishable genomics toolkit
 (Python host + Rust `_core`). This checklist follows the dated vault TODO source:
-`2026-05-21.md` -> `## CropAbility`.
+`2026-05-22.md` -> `## CropAbility`.
 
 **Authority:** This file is the repository checkbox truth source for vault sync
 (see [`doc/TODO_PROGRESS_SYNC.md`](TODO_PROGRESS_SYNC.md)).
@@ -48,21 +48,21 @@ Master execution checklist for the **CropAbility** publishable genomics toolkit
 - [x] `CA-2211-04` Native `.so` git hygiene | LogRef: 2026-05-21 / CA-2211-04
 - [ ] `CA-2211-05` Confirm public GitHub remote and README clone URL
 - [ ] `CA-2211-06` `cropability.yaml` plus environment variable validation
-- [x] `CA-2211-07` Rust I/O plus PyO3 native extension | LogRef: baseline rollup
-- [x] `CA-2211-08` Pytest layout and markers | LogRef: baseline rollup
+- [x] `CA-2211-07` Rust I/O plus PyO3 native extension | LogRef: 2026-05-21
+- [x] `CA-2211-08` Pytest layout and markers | LogRef: 2026-05-21
 
 #### 2.1.2 GPU
 
 - [ ] `CA-2212-00` GPU
-- [x] `CA-2212-01` DeviceManager | LogRef: baseline rollup
-- [x] `CA-2212-02` Triton/PyTorch kernels | LogRef: baseline rollup
+- [x] `CA-2212-01` DeviceManager | LogRef: 2026-05-21
+- [x] `CA-2212-02` Triton/PyTorch kernels | LogRef: 2026-05-21
 - [ ] `CA-2212-03` Multi-GPU DDP documentation and smoke test
 - [ ] `CA-2212-04` Kernel versus CPU benchmark
 
 #### 2.1.3 Delivery
 
 - [ ] `CA-2213-00` Delivery
-- [x] `CA-2213-01` Development documentation suite | LogRef: baseline rollup
+- [x] `CA-2213-01` Development documentation suite | LogRef: 2026-05-21
 - [x] `CA-2213-02` Progress tracking documentation | LogRef: 2026-05-21 / CA-2213-02
 - [ ] `CA-2213-03` PyPI / wheel release
 - [ ] `CA-2213-04` `0.2.0` release gate
@@ -105,8 +105,8 @@ Master execution checklist for the **CropAbility** publishable genomics toolkit
 ### 2.3 Personal genetics and breeding algorithms
 
 - [ ] `CA-223-00` Personal genetics and breeding algorithm implementation
-- [x] `CA-223-01` Variant/LD/GWAS engine | LogRef: baseline rollup
-- [x] `CA-223-02` SmithWatermanGPU | LogRef: baseline rollup
+- [x] `CA-223-01` Variant/LD/GWAS engine | LogRef: 2026-05-21
+- [x] `CA-223-02` SmithWatermanGPU | LogRef: 2026-05-21
 - [ ] `CA-223-03` CRAM smoke test
 
 ### 2.4 Visualization
