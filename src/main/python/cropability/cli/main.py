@@ -228,7 +228,10 @@ def cmd_call_variants(args: argparse.Namespace) -> int:
     if "mpileup" in report:
         print(f"  mpileup: {report['mpileup']['output']}")
     if "fastcall3" in report:
-        print(f"  vcf: {report['fastcall3']['output']}")
+        fc = report["fastcall3"]
+        print(f"  vcf: {fc.get('output_vcf', fc.get('output', ''))}")
+        print(f"  records: {fc.get('n_records', 0)}")
+        print(f"  elapsed: {fc.get('elapsed_seconds', 0):.1f}s")
     return 0
 
 

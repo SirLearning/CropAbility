@@ -283,7 +283,8 @@ fn generate_records_htslib(
             }
             let key = (chrom.clone(), pos1);
             if !ref_table.contains_key(&key) {
-                let seq = ref_reader.fetch_seq(&chrom, pos0 as usize, (pos0 + 1) as usize)?;
+                // rust-htslib faidx fetch_seq uses inclusive [begin, end] (see faidx_read_chr_* tests).
+                let seq = ref_reader.fetch_seq(&chrom, pos0 as usize, pos0 as usize)?;
                 let rb = if seq.is_empty() {
                     "N".to_string()
                 } else {
