@@ -2,7 +2,7 @@
 
 Master execution checklist for the **CropAbility** publishable genomics toolkit
 (Python host + Rust `_core`). This checklist follows the dated vault TODO source:
-`2026-05-22.md` -> `## CropAbility`.
+`2026-05-30.md` -> `## CropAbility`.
 
 **Authority:** This file is the repository checkbox truth source for vault sync
 (see [`doc/TODO_PROGRESS_SYNC.md`](TODO_PROGRESS_SYNC.md)).
