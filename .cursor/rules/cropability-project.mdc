@@ -36,8 +36,8 @@ Build a **publishable** genomics toolkit:
 - **Nested Rust crates** — no `src/main/rust/src/`, `torch/`, `ngs/Cargo.toml`, extra `bin/` for torch tests
 - **Second Rust test crate** — no `src/test/rust/`, no `[workspace]` members for tests unless user requests split
 - **`scripts/`** — no dev/benchmark scripts; use pytest in `src/test/python/`
-- **Docs under `src/`** — no `README.md` in `src/test/`; project docs live in `doc/`
-- **Repo `lib/`** — vendored libtorch / `pytorch_java_libs`; use Conda `pytorch` instead (see `doc/DEPENDENCIES.md`)
+- **Docs under `src/`** — no `README.md` in `src/test/`; user docs in `README.md`, tracking in `doc/`
+- **Repo `lib/`** — vendored libtorch / `pytorch_java_libs`; use Conda `pytorch` (see `README.md`)
 - **Merging `archive/` into `src/`** — legacy PGL is not part of the product; port ideas into `cropability/` instead
 
 ## Repository layout
@@ -50,19 +50,19 @@ environment.yml / install.py / requirements-gpu.txt / requirements-cpu.txt
 src/main/python/cropability/  # ONLY installable Python code
 src/main/rust/                # flat: lib.rs, python.rs, io/, genomics/
 src/main/resources/           # config; private/ gitignored; no bundled ML checkpoints
-src/test/python/              # pytest only (see doc/TESTING.md)
+src/test/python/              # pytest only (see README.md, `.cursor/rules/cropability-tests.mdc`)
 archive/legacy/pgl/           # historical PGL — not packaged, not maintained as product API
-doc/                          # TESTING.md, RUST_DEVELOPMENT.md, PYTHON_DEVELOPMENT.md
-README.md                     # user-facing overview
+doc/                          # TODO.md + TODO_PROGRESS_LOG.md only
+README.md                     # install, dependencies, runtime, testing commands
 ```
 
 ## Documentation policy
 
 | Type | Path |
 |------|------|
-| Testing guide | `doc/TESTING.md` |
-| Rust / PyO3 | `doc/RUST_DEVELOPMENT.md` |
-| Python API | `doc/PYTHON_DEVELOPMENT.md` (legacy PGL sections = archive reference only) |
+| Install / dependencies / runtime | `README.md` |
+| Checklist | `doc/TODO.md` |
+| Engineering log | `doc/TODO_PROGRESS_LOG.md` |
 | Agent rules | `AGENTS.md`, `.cursor/rules/*.mdc` |
 
 Do **not** add explanatory README files under `src/test/` or `src/main/python/`.
@@ -103,4 +103,4 @@ cargo test
 - Prefer minimal, focused diffs.
 - Do not commit secrets or `src/main/resources/private/`.
 - Do not create git commits unless the user asks.
-- Read `doc/TESTING.md` before changing tests; read `doc/RUST_DEVELOPMENT.md` before changing Rust.
+- Read `README.md` (install/testing) and `doc/TODO_PROGRESS_LOG.md` (pytest conventions) before changing tests; follow `cropability-rust.mdc` for Rust.

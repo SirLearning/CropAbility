@@ -50,9 +50,8 @@ cargo test   # optional
 | Content | Location | Never put here |
 |---------|----------|----------------|
 | Pytest suite | `src/test/python/` | `scripts/`, `src/test/python/README.md` |
-| Test documentation | `doc/TESTING.md` | Under `src/` |
-| Rust/Python dev guides | `doc/RUST_DEVELOPMENT.md`, `doc/PYTHON_DEVELOPMENT.md`, `doc/DEPENDENCIES.md` | — |
-| User overview | `README.md` | — |
+| Install, dependencies, runtime | `README.md` | Extra guides under `doc/` |
+| Checklist / engineering log | `doc/TODO.md`, `doc/TODO_PROGRESS_LOG.md` | Other files under `doc/` |
 | Legacy PGL reference | `archive/legacy/pgl/` | Install tree or `scripts/` |
 
 - All validation → **pytest** in `src/test/python/` (`native`, `gpu`, `slow` markers).
@@ -89,4 +88,4 @@ For non-Cursor agents: read every `.mdc` file; the markdown body below each YAML
 - **Minimal diffs**; do not refactor `archive/legacy/` unless asked.
 - Do not commit `src/main/resources/private/` or secrets.
 - Do not `git commit` unless the user explicitly asks.
-- New features: GPU → Python; CPU/NGS → Rust + thin `ngs/`; tests → `src/test/python/`; docs → `doc/`.
+- New features: GPU → Python; CPU/NGS → Rust + thin `ngs/`; tests → `src/test/python/`; user docs → `README.md`; work log → `doc/TODO_PROGRESS_LOG.md`.

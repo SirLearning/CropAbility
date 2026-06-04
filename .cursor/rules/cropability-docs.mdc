@@ -1,5 +1,5 @@
 ---
-description: Documentation conventions — all project docs under doc/
+description: Documentation conventions — README for users; doc/ for checklist and log
 globs: doc/**/*
 alwaysApply: false
 ---
@@ -8,17 +8,14 @@ alwaysApply: false
 
 ## Location
 
-All **project documentation** belongs under **`doc/`** or root **`README.md`**:
+| Content | Path |
+|---------|------|
+| Install, dependencies, runtime, CLI/API usage | **`README.md`** |
+| Execution checklist | **`doc/TODO.md`** |
+| Engineering progress log | **`doc/TODO_PROGRESS_LOG.md`** |
+| Agent instructions | **`AGENTS.md`**, **`.cursor/rules/`** |
 
-| Doc | Purpose |
-|-----|---------|
-| `doc/TODO.md` | Master checklist (`CA-*` IDs; historical `M1-*` in log); checkbox truth source |
-| `doc/TODO_PROGRESS_LOG.md` | Dated engineering log (required for each closed item; see **Progress logging** below) |
-| `doc/TODO_PROGRESS_SYNC.md` | Vault / GitHub sync mapping (Obsidian `3.CropAbility/`) |
-| `doc/TESTING.md` | Pytest layout, markers, publish vs dev assets |
-| `doc/RUST_DEVELOPMENT.md` | PyO3, Cargo features, maturin |
-| `doc/PYTHON_DEVELOPMENT.md` | Python API; legacy PGL blocks are archive reference only |
-| `README.md` | User-facing install and usage |
+**`doc/`** contains only `TODO.md` and `TODO_PROGRESS_LOG.md`. Do not add other guides under `doc/`.
 
 Do **not** create `README.md` or architecture notes under `src/test/` or `src/main/python/`.
 
@@ -34,18 +31,21 @@ When updating docs, reflect current architecture:
 - Single root `Cargo.toml`; tests in `src/test/python/`.
 - Resources in `src/main/resources/`; models not vendored in repo.
 
-Keep `doc/PYTHON_DEVELOPMENT.md` legacy PGL sections clearly labeled as historical, not the supported API.
+Legacy PGL is under `archive/legacy/pgl/` — not the supported API.
 
 ## Progress logging
 
 **When to log:** Add a new entry in `doc/TODO_PROGRESS_LOG.md` whenever you:
 
-- Close an `M1-*` / `CA-*` item in `doc/TODO.md` (checkbox → `[x]`).
-- Land a significant partial milestone that future readers need to reconstruct (multi-file feature, behavior change, or blocked follow-up).
+- Close a checklist item in `doc/TODO.md` (checkbox → `[x]`).
+- Land a significant partial milestone (multi-file feature, behavior change, or blocked follow-up).
+- Change repository code, tests, or validation workflow in a way future readers must reconstruct.
 
-Pair each closed checkbox with a **LogRef** in `doc/TODO.md` pointing to the log heading (e.g. `LogRef: 2026-05-21 / CA-2211-01`, or `LogRef: baseline rollup` when covered only by the rollup entry). See [`doc/TODO_PROGRESS_SYNC.md`](doc/TODO_PROGRESS_SYNC.md) for vault sync rules and `M1-*` → `CA-*` migration.
+When closing a checkbox in `doc/TODO.md`, add a matching dated entry in `doc/TODO_PROGRESS_LOG.md` (or rely on an existing rollup entry).
 
-**Be as detailed as practical.** The log is the durable engineering record for vault sync and onboarding — prefer one thorough entry over several vague ones.
+**User-facing install/run changes** go in `README.md`, not new files under `doc/`.
+
+**Be as detailed as practical.** The log is the durable engineering record for onboarding — prefer one thorough entry over several vague ones.
 
 ### Required fields (every entry)
 
@@ -54,27 +54,24 @@ Use the template in `doc/TODO_PROGRESS_LOG.md`. Each field must be **specific**,
 | Field | What to include |
 |-------|-----------------|
 | **Date** | ISO date (`YYYY-MM-DD`); add a second date if work spanned days. |
-| **TODO ID/Title** | Exact ID(s) from `doc/TODO.md` plus the human title. |
+| **Title** | Same English title as the matching line in `doc/TODO.md` when applicable. |
 | **Scope** | What problem was solved, acceptance criteria, and what was explicitly **out of scope**. |
-| **Files Changed** | Concrete paths (not “various”); group by area (`src/main/rust/…`, `src/test/python/…`, `doc/…`). Note new vs modified vs deleted. |
-| **Validation Steps** | Exact commands run (`pytest …`, `cargo test`, `maturin develop …`, CLI invocations) and **pass/fail** outcome; mention skipped steps and why (no GPU, no htslib, etc.). |
-| **Outcome** | What now works differently; user-visible behavior; link to README / dev doc sections updated. |
-| **Risks/Follow-ups** | Open items, known gaps, regressions, dependency pins, or IDs of related unchecked TODOs. |
+| **Files Changed** | Concrete paths (not “various”); group by area (`src/main/rust/…`, `src/test/python/…`, `README.md`, …). |
+| **Validation Steps** | Exact commands run (`pytest …`, `cargo test`, `maturin develop …`, CLI invocations) and **pass/fail** outcome. |
+| **Outcome** | What now works differently; user-visible behavior; README sections updated. |
+| **Risks/Follow-ups** | Open items, known gaps, or related unchecked checklist lines. |
 
 ### Strongly recommended (include when applicable)
 
-- **Commits / PRs:** Short hash(es) or PR URL(s) that contain the work.
-- **Design decisions:** Why this approach (e.g. Rust vs Python, CLI flag names) and alternatives rejected.
-- **Before / after:** Prior behavior vs new behavior; breaking changes called out explicitly.
-- **API / CLI surface:** New or changed public functions, PyO3 exports, subcommands, flags, defaults.
+- **Commits / PRs:** Short hash(es) or PR URL(s).
+- **Design decisions:** Why this approach and alternatives rejected.
+- **API / CLI surface:** New or changed public functions, PyO3 exports, subcommands, flags.
 - **Test coverage:** New or updated test modules and markers (`native`, `gpu`, `slow`).
-- **Performance / resource notes:** Build time, memory, GPU requirement, or benchmark snippets if relevant.
-- **Environment:** Conda/pip/maturin/Cargo feature flags needed to reproduce validation.
-- **Vault sync:** Whether `doc/TODO.md` checkbox and LogRef were updated in the same change.
+- **Checklist:** Whether `doc/TODO.md` checkbox and log entry were updated in the same change.
 
 ### Anti-patterns (do not do)
 
-- One-line entries (“fixed bug”, “updated docs”) without paths, commands, or outcome.
-- “Files Changed: repo” or “Validation: tests pass” without naming files or commands.
-- Closing a checkbox in `doc/TODO.md` without a matching log entry (unless `LogRef: vault` for vault-only historical items).
-- Duplicating the entire diff — summarize **what** changed and **why**, with paths as anchors.
+- One-line log entries without paths, commands, or outcome.
+- New `doc/*.md` guides (use `README.md` or the progress log).
+- Closing a checkbox without a matching log entry when repo work was done.
+- Duplicating the entire diff — summarize **what** changed and **why**.

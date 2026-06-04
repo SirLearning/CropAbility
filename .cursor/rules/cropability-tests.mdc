@@ -1,12 +1,12 @@
 ---
-description: Pytest conventions for src/test/python (see doc/TESTING.md)
+description: Pytest conventions for src/test/python
 globs: src/test/python/**/*
 alwaysApply: false
 ---
 
 # CropAbility test rules
 
-Full guide: **`doc/TESTING.md`** (do not duplicate as README under `src/test/`).
+Run commands: **`README.md`** (Testing). Layout history: **`doc/TODO_PROGRESS_LOG.md`**. Do not add README under `src/test/`.
 
 ## Location
 

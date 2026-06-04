@@ -47,4 +47,4 @@ Deprecated shims (`cropability.io`, `cropability.genomics.pipeline`) — touch o
 
 ## Tests for changes
 
-Add or update tests under `src/test/python/` per `doc/TESTING.md` — not under `scripts/`.
+Add or update tests under `src/test/python/` per `cropability-tests.mdc` — not under `scripts/`.

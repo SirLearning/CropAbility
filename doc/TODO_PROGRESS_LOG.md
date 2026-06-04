@@ -1,68 +1,19 @@
 # TODO Progress Log
 
 Mandatory engineering log for CropAbility. Add a new entry after each completed
-`CA-*` item in [`doc/TODO.md`](TODO.md) (or significant partial milestone).
+item in [`doc/TODO.md`](TODO.md) (or a significant partial milestone).
 
-Pair with [`doc/TODO_PROGRESS_SYNC.md`](TODO_PROGRESS_SYNC.md) (vault / GitHub sync
-rules). Historical flat `M1-*` IDs remain in parentheses for entries written before
-the vault-aligned checklist; see **ID scheme and historical migration** below.
+## Headings
 
-## ID scheme and historical migration
-
-**Current (2026-05-21):** Checkbox truth in `doc/TODO.md` uses `CA-{section}-{item}`
-aligned with the dated vault TODO source `2026-05-21.md` → `## CropAbility`.
-Parent items end in `-00`; leaf items end in `-01`, `-02`, and so on.
-
-**Historical:** The first repository log used flat `M1-{AREA}-{nnn}` IDs (FOUND,
-GPU, GEN, NGS, CLI, TEST, DELIV). Those IDs are **retired for new checkboxes** but
-preserved here for traceability. Vault canonical mapping lives in
-`CropAbility.md` §1.1.1 Historical ID migration.
-
-### M1 → CA mapping (repository completions)
-
-| Historical `M1-*` | Current `CA-*` | Title | Log heading |
-|-------------------|----------------|-------|-------------|
-| `M1-FOUND-001` | `CA-2211-01` | Canonical repository layout | 2026-05-21 / CA-2211-01 |
-| `M1-FOUND-002` | `CA-2211-02` | Agent and English-only policy | 2026-05-21 / CA-2211-02 |
-| `M1-FOUND-003` | `CA-2211-03` | One-shot installation path | 2026-05-21 / CA-2211-03 |
-| `M1-FOUND-004` | `CA-2211-04` | Native `.so` git hygiene | 2026-05-21 / CA-2211-04 |
-| `M1-FOUND-005` | `CA-2211-05` | Confirm public GitHub remote and README clone URL | *(open — no log yet)* |
-| `M1-NGS-001` | `CA-2211-07` | Rust I/O plus PyO3 native extension | baseline rollup only |
-| `M1-TEST-001` | `CA-2211-08` | Pytest layout and markers | baseline rollup only |
-| `M1-GPU-001` | `CA-2212-01` | DeviceManager | baseline rollup only |
-| `M1-GPU-002` | `CA-2212-02` | Triton/PyTorch kernels | baseline rollup only |
-| `M1-DELIV-001` | `CA-2213-01` | Development documentation suite | baseline rollup only |
-| `M1-DELIV-002` | `CA-2213-02` | Progress tracking documentation | 2026-05-21 / CA-2213-02 |
-| `M1-CLI-001` | `CA-2223-21` | CLI pileup / call-variants | 2026-05-21 / CA-2223-21 |
-| `M1-NGS-004` | `CA-2223-21` | CLI pileup / call-variants *(same leaf)* | 2026-05-21 / CA-2223-21 |
-| `M1-NGS-003` | `CA-2223-22` | In-process mpileup plus FastCall3-style calling | 2026-05-21 / CA-2223-22 |
-| `M1-GEN-001` | `CA-223-01` | Variant/LD/GWAS engine | baseline rollup only |
-| `M1-GEN-002` | `CA-223-02` | SmithWatermanGPU | baseline rollup only |
-| `M1-NGS-005` | *(none)* | Native-mode CLI parity *(retired ID)* | track under open `CA-2223-*` work |
-
-Vault-only completions (no repository log body required; `LogRef: vault` in
-`doc/TODO.md`): `CA-21-01`, `CA-2221-01`, `CA-2222-00` … `CA-2222-07`.
-
-### Architecture realignment (`doc/TODO.md` sections)
-
-| Old flat bucket | New checklist location | Example `CA-*` |
-|-----------------|------------------------|----------------|
-| M1-FOUND | §2.1.1 Foundation | `CA-2211-01` … `CA-2211-08` |
-| M1-GPU | §2.1.2 GPU | `CA-2212-01` … `CA-2212-04` |
-| M1-DELIV | §2.1.3 Delivery | `CA-2213-01` … `CA-2213-04` |
-| M1-NGS, M1-CLI | §2.2.3 FastCall3 Rust rewrite | `CA-2223-21`, `CA-2223-22` |
-| M1-GEN | §2.3 Personal genetics and breeding | `CA-223-01` … `CA-223-03` |
-| *(new)* | §2.4 Visualization | `CA-224-01` |
-| *(vault history)* | §1 FlagOS; §2.2.1–2.2.2 JNI/TorchScript explorations | `CA-21-01`, `CA-2221-*`, `CA-2222-*` |
-
-**LogRef convention:** `doc/TODO.md` points to the **primary `CA-*` slug** in this
-file (e.g. `LogRef: 2026-05-21 / CA-2211-01`). Include `(M1-…)` in the log heading
-only when a historical ID exists.
+- **Format:** `## YYYY-MM-DD — short English title` (newest entries at the top after this
+  intro block, or append at the bottom — stay consistent within the file).
+- Match checklist titles in [`doc/TODO.md`](TODO.md) by meaning, not by a separate slug or
+  cross-reference field.
 
 ## Entry template
 
 - Date:
-- TODO ID/Title: `CA-…` (historical `M1-…` if applicable)
+- Title:
 - Scope:
 - Files Changed:
 - Validation Steps:
@@ -71,51 +22,90 @@ only when a historical ID exists.
 
 ---
 
-## 2026-05-21 / CA-2213-02 — checklist ID migration
+## 2026-06-04 — documentation consolidation
+
+- Date: 2026-06-04
+- Title: Consolidate doc/ into README plus progress log
+- Scope:
+  - Move install, dependencies, runtime, and Rust extension usage into `README.md`.
+  - Retire `doc/DEPENDENCIES.md`, `doc/PYTHON_DEVELOPMENT.md`, `doc/RUST_DEVELOPMENT.md`, `doc/TESTING.md`.
+  - Keep only `doc/TODO.md` and `doc/TODO_PROGRESS_LOG.md` under `doc/`.
+  - Record pytest layout and conventions here (formerly `doc/TESTING.md`).
+- Files Changed:
+  - `README.md` (modified — install, dependencies, Rust API, testing commands)
+  - `doc/DEPENDENCIES.md`, `doc/PYTHON_DEVELOPMENT.md`, `doc/RUST_DEVELOPMENT.md`, `doc/TESTING.md` (deleted)
+  - `AGENTS.md`, `.cursor/rules/cropability-project.mdc`, `cropability-docs.mdc`, `cropability-tests.mdc`, `english-only.mdc`, `cropability-python.mdc` (modified — paths)
+- Validation Steps:
+  - Grep confirmed no remaining links to deleted `doc/*.md` guides.
+- Outcome:
+  - User-facing install/run docs live in `README.md`.
+  - `doc/` holds checklist + engineering log only.
+- Risks/Follow-ups:
+  - External bookmarks to removed `doc/TESTING.md` etc. need updating to README or this log.
+
+### Pytest layout and conventions (retained reference)
+
+**Location:** `src/test/python/` only; shared `conftest.py`; no `scripts/`; Rust tests via `cargo test`.
+
+| File | Layer | Needs `_core` | Needs GPU |
+|------|--------|---------------|-----------|
+| `test_config.py` | `utils.config` | No | No |
+| `test_gpu_manager.py` | `gpu.device_manager` | No | Optional¹ |
+| `test_kernels_seq.py` | `kernels.seq` | No | No (CPU) |
+| `test_kernels_stats.py` | `kernels.stats` | No | No (CPU) |
+| `test_genomics.py` | GPU `genomics/*` | No | No (CPU) |
+| `test_ngs_io.py` | `ngs.io` | FASTA only | No |
+| `test_ngs_pipeline.py` | `ngs.pipeline`, BAM | Yes | No |
+| `test_cli.py` | `cli.main` | No | No |
+
+¹ `test_memory_stats_structure` skipped when CUDA unavailable.
+
+**Markers (`pyproject.toml`):** `native`, `gpu`, `slow` — use `@pytest.mark.native` and `native_core` fixture for NGS; `@pytest.mark.gpu` when CUDA required.
+
+**Adding tests:** GPU/kernels → `test_*.py` under `src/test/python/`; NGS → `cropability.ngs`, not deprecated shims; CLI → `test_cli.py`; no TorchScript/`.pt` tests unless product scope changes.
+
+**Not shipped:** `src/test/`, `archive/`, `doc/` are not in the wheel.
+
+## 2026-05-21 — progress tracking simplification
 
 - Date: 2026-05-21
-- TODO ID/Title: `CA-2213-02` Progress tracking docs — ID scheme migration (historical `M1-DELIV-002`)
+- Title: Progress tracking — drop task IDs; use date + short English titles
 - Scope:
-  - Realign `doc/TODO.md` with vault `2026-05-21.md` → `## CropAbility` using hierarchical `CA-*` IDs.
-  - Retire flat `M1-*` as the checkbox ID scheme; document full `M1-*` → `CA-*` mapping in this log and in [`doc/TODO_PROGRESS_SYNC.md`](TODO_PROGRESS_SYNC.md).
-  - Remap checklist sections: Foundation / GPU / Delivery under §2.1 architecture; NGS+CLI under §2.2.3 Rust FastCall rewrite; genomics under §2.3; visualization under §2.4.
+  - Simplify `doc/TODO.md` checkboxes to descriptive English titles only (no `CA-*` / `M1-*`).
+  - Remove ID scheme and migration tables from progress docs and Cursor rules.
 - Files Changed:
-  - `doc/TODO.md` (modified — `CA-*` IDs, vault traceability rules, LogRefs)
-  - `doc/TODO_PROGRESS_LOG.md` (modified — migration table, dual-ID headings)
-  - `doc/TODO_PROGRESS_SYNC.md` (modified — vault mapping, templates, agent steps)
+  - `doc/TODO.md` (modified — titles only)
+  - `doc/TODO_PROGRESS_LOG.md` (modified — this file)
   - `.cursor/rules/cropability-docs.mdc` (modified — progress logging rules)
 - Validation Steps:
-  - Cross-checked every `[x]` item in `doc/TODO.md` against a log heading or `LogRef: vault`.
-  - Verified section numbers in `TODO_PROGRESS_SYNC.md` match `TODO.md` §2 hierarchy.
+  - Cross-checked every `[x]` item in `doc/TODO.md` against a log heading where repo work applies.
 - Outcome:
-  - `CA-*` is the authoritative checkbox ID; `M1-*` preserved in migration tables and historical log slugs.
-  - Vault sync agents should copy `CA-*` IDs from `doc/TODO.md` and cite `CA-*` LogRef slugs from this file.
+  - Checklist and log are readable without decoding hierarchical IDs.
 - Risks/Follow-ups:
-  - Items covered only by the baseline rollup (`CA-2211-07`, `CA-2211-08`, `CA-2212-*`, `CA-2213-01`, `CA-223-*`) should get dedicated log entries when next touched.
-  - Open `CA-2211-05` (README clone URL) replaces follow-up formerly noted as `M1-FOUND-005`.
-  - Retired `M1-NGS-005` (native-mode parity) has no `CA-*` leaf yet — track under §2.2.3 open work.
+  - Items covered only by the baseline rollup should get dedicated log entries when next touched.
+  - Open “Confirm public GitHub remote and README clone URL” still needs a log entry when closed.
+  - Native-mode CLI parity has no dedicated checklist leaf yet — track under §2.2.3 open work.
 
-## 2026-05-21 / CA-2213-02 (M1-DELIV-002) — progress tracking bootstrap
+## 2026-05-21 — progress tracking bootstrap
 
 - Date: 2026-05-21
-- TODO ID/Title: `CA-2213-02` Progress tracking documentation (historical `M1-DELIV-002`)
-- Scope: Add `doc/TODO.md`, `doc/TODO_PROGRESS_LOG.md`, and `doc/TODO_PROGRESS_SYNC.md` aligned with DBone / SirLearning/script vault sync conventions; seed checklist from current repo state.
+- Title: Progress tracking documentation
+- Scope: Add `doc/TODO.md` and `doc/TODO_PROGRESS_LOG.md`; seed checklist from current repo state.
 - Files Changed:
   - `doc/TODO.md` (new)
   - `doc/TODO_PROGRESS_LOG.md` (new)
-  - `doc/TODO_PROGRESS_SYNC.md` (new)
 - Validation Steps:
-  - Cross-checked against `README.md`, `AGENTS.md`, `doc/TESTING.md`, `doc/RUST_DEVELOPMENT.md`, and git history on `main`.
+  - Cross-checked against `README.md`, `AGENTS.md`, and git history on `main`.
 - Outcome:
-  - Checkbox IDs and log entries established for vault sync via GitHub raw (`SirLearning/CropAbility`).
+  - Checklist and engineering log established under `doc/`.
 - Risks/Follow-ups:
-  - Open `CA-*` items need validation on real GPU/BAM hosts; update log when closed.
+  - Open checklist items need validation on real GPU/BAM hosts; update log when closed.
 
-## 2026-05-21 (baseline rollup)
+## 2026-05-21 — baseline rollup
 
 - Date: 2026-05-21
-- TODO ID/Title: Pre-tracker baseline → `CA-2211` / `CA-2212` / `CA-2223` / `CA-223` / `CA-2213` (historical M1-FOUND / GPU / GEN / NGS / CLI / TEST / DELIV)
-- Scope: Record merged work that predates this log (commits through `f47b593`).
+- Title: Pre-tracker baseline (Foundation, GPU, NGS, genetics, delivery, CLI)
+- Scope: Record merged work that predates per-item log entries (commits through `f47b593`).
 - Files Changed: (representative)
   - `src/main/python/cropability/**` — GPU, genomics, ngs facade, CLI
   - `src/main/rust/**` — io, pileup, fastcall3, pipeline, PyO3
@@ -126,72 +116,72 @@ only when a historical ID exists.
   - `maturin develop --release --features python,htslib` + `pytest -m native` (when htslib available) — pass when built
   - `cargo test` (optional) — pass
 - Outcome:
-  - **`CA-2211` Foundation:** `CA-2211-01` layout, `CA-2211-02` agent rules, `CA-2211-03` install, `CA-2211-04` native `.so` gitignore, `CA-2211-07` Rust I/O + PyO3, `CA-2211-08` pytest markers.
-  - **`CA-2212` GPU:** `CA-2212-01` DeviceManager, `CA-2212-02` seq/stats Triton/PyTorch kernels.
-  - **`CA-223` Genetics:** `CA-223-01` VariantCaller / LDCalculator / GWASEngine, `CA-223-02` SmithWatermanGPU.
-  - **`CA-2223` NGS:** `CA-2223-22` in-process mpileup + FastCall3-style logic, `CA-2223-21` CLI `pileup` / `call-variants`; Rust owns CPU NGS hot path via `cropability.ngs`.
-  - **`CA-2213` Delivery:** `CA-2213-01` core dev docs under `doc/`.
+  - **Foundation:** layout, agent rules, install, native `.so` gitignore, Rust I/O + PyO3, pytest markers.
+  - **GPU:** DeviceManager, seq/stats Triton/PyTorch kernels.
+  - **Genetics:** VariantCaller / LDCalculator / GWASEngine, SmithWatermanGPU.
+  - **NGS:** in-process mpileup + FastCall3-style logic, CLI `pileup` / `call-variants`; Rust owns CPU NGS hot path via `cropability.ngs`.
+  - **Delivery:** user docs in `README.md`; tracking under `doc/`.
   - **CLI (rollup):** info, benchmark, snp, ld, gwas, align, pileup, call-variants.
 - Risks/Follow-ups:
   - Historical Evo2 CLI experiments were removed during structure initiation; do not resurrect without explicit product decision.
-  - README still shows placeholder clone URL — track under `CA-2211-05`.
+  - README still shows placeholder clone URL — track under open Foundation item.
 
-## 2026-05-21 / CA-2211-01 (M1-FOUND-001)
+## 2026-05-21 — canonical repository layout
 
 - Date: 2026-05-21
-- TODO ID/Title: `CA-2211-01` Canonical repository layout (historical `M1-FOUND-001`)
+- Title: Canonical repository layout
 - Scope: Single Python package `cropability`, flat Rust crate, no nested workspaces, tests only under `src/test/python/`.
 - Files Changed: repo structure (`1532036 Structure initiation` and follow-ups)
 - Validation Steps: `pyproject.toml` includes only `cropability*`; root `Cargo.toml` single crate — pass
 - Outcome: Architecture matches `AGENTS.md` binding rules.
 - Risks/Follow-ups: Do not reintroduce Java, TorchScript, or `scripts/`.
 
-## 2026-05-21 / CA-2211-02 (M1-FOUND-002)
+## 2026-05-21 — agent and English-only policy
 
 - Date: 2026-05-21
-- TODO ID/Title: `CA-2211-02` Agent and English-only policy (historical `M1-FOUND-002`)
+- Title: Agent and English-only policy
 - Scope: `AGENTS.md`, `.cursor/rules/*`, English-only docs and comments policy.
 - Files Changed: `AGENTS.md`, `.cursor/rules/english-only.mdc`, `.cursor/rules/cropability-project.mdc`
 - Validation Steps: Policy files present and referenced from README — pass
 - Outcome: Agent workflow documented for Cursor/Codex.
 - Risks/Follow-ups: Keep docs in `doc/` only (no README under `src/`).
 
-## 2026-05-21 / CA-2211-03 (M1-FOUND-003)
+## 2026-05-21 — one-shot installation path
 
 - Date: 2026-05-21
-- TODO ID/Title: `CA-2211-03` One-shot installation path (historical `M1-FOUND-003`)
+- Title: One-shot installation path
 - Scope: Conda + pip + maturin one-shot installer and requirement files.
-- Files Changed: `install.py`, `environment.yml`, `requirements-gpu.txt`, `requirements-cpu.txt`, `doc/DEPENDENCIES.md`
+- Files Changed: `install.py`, `environment.yml`, `requirements-gpu.txt`, `requirements-cpu.txt`, `README.md` (dependencies section)
 - Validation Steps: `python install.py` documented in README — pass (documented)
 - Outcome: Reproducible env bootstrap for GPU and CPU PyTorch variants.
 - Risks/Follow-ups: htslib/samtools remain Conda/system deps for native BAM paths.
 
-## 2026-05-21 / CA-2211-04 (M1-FOUND-004)
+## 2026-05-21 — native extension git hygiene
 
 - Date: 2026-05-21
-- TODO ID/Title: `CA-2211-04` Native extension git hygiene (historical `M1-FOUND-004`)
+- Title: Native extension git hygiene
 - Scope: Stop tracking maturin-built `_core*.so`; rebuild via maturin after clone.
 - Files Changed: `.gitignore`, removed tracked `.so` (`f47b593`)
 - Validation Steps: `git status` clean after local maturin build — pass
 - Outcome: Wheels/extensions built per platform, not committed.
 - Risks/Follow-ups: Document rebuild in every NGS onboarding path.
 
-## 2026-05-21 / CA-2223-22 (M1-NGS-003)
+## 2026-05-21 — in-process mpileup and FastCall3-style calling
 
 - Date: 2026-05-21
-- TODO ID/Title: `CA-2223-22` In-process mpileup plus FastCall3-style calling (historical `M1-NGS-003`)
+- Title: In-process mpileup plus FastCall3-style calling
 - Scope: In-process mpileup and variant detection without external samtools/FastCall3 binaries.
 - Files Changed: `src/main/rust/genomics/pileup.rs`, `fastcall3.rs`, `pipeline.rs`, Python `ngs/*`
 - Validation Steps: `pytest src/test/python/test_ngs_pipeline.py -m native` (with maturin build) — pass when built
 - Outcome: Hybrid pipeline default in CLI; Rust owns CPU NGS hot path.
-- Risks/Follow-ups: Native-mode CLI parity has no `CA-*` leaf yet (formerly `M1-NGS-005`); track under §2.2.3 open work.
+- Risks/Follow-ups: Native-mode CLI parity has no dedicated checklist leaf yet; track under §2.2.3 open work.
 
-## 2026-05-21 / CA-2223-21 (M1-CLI-001, M1-NGS-004)
+## 2026-05-21 — CLI pileup and call-variants
 
 - Date: 2026-05-21
-- TODO ID/Title: `CA-2223-21` CLI pileup / call-variants (historical `M1-CLI-001`, `M1-NGS-004`)
+- Title: CLI pileup / call-variants
 - Scope: User-facing `cropability` entry point and NGS/GPU commands (pileup, call-variants, and related subcommands).
 - Files Changed: `src/main/python/cropability/cli/main.py`, `pyproject.toml` scripts
 - Validation Steps: `pytest src/test/python/test_cli.py` — pass
 - Outcome: Documented commands in README Quick start.
-- Risks/Follow-ups: Structured output / viz entry points remain open (`CA-224-01`).
+- Risks/Follow-ups: Structured output / viz entry points remain open (Visualization section).
