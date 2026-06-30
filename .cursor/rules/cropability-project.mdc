@@ -52,7 +52,7 @@ src/main/rust/                # flat: lib.rs, python.rs, io/, genomics/
 src/main/resources/           # config; private/ gitignored; no bundled ML checkpoints
 src/test/python/              # pytest only (see README.md, `.cursor/rules/cropability-tests.mdc`)
 archive/legacy/pgl/           # historical PGL — not packaged, not maintained as product API
-doc/                          # TODO.md + TODO_PROGRESS_LOG.md only
+doc/                          # PROGRESS_README.md + progress/YYYY-MM-DD.md
 README.md                     # install, dependencies, runtime, testing commands
 ```
 
@@ -61,8 +61,8 @@ README.md                     # install, dependencies, runtime, testing commands
 | Type | Path |
 |------|------|
 | Install / dependencies / runtime | `README.md` |
-| Checklist | `doc/TODO.md` |
-| Engineering log | `doc/TODO_PROGRESS_LOG.md` |
+| Progress index | `doc/PROGRESS_README.md` |
+| Daily engineering log | `doc/progress/YYYY-MM-DD.md` |
 | Agent rules | `AGENTS.md`, `.cursor/rules/*.mdc` |
 
 Do **not** add explanatory README files under `src/test/` or `src/main/python/`.
@@ -103,4 +103,5 @@ cargo test
 - Prefer minimal, focused diffs.
 - Do not commit secrets or `src/main/resources/private/`.
 - Do not create git commits unless the user asks.
-- Read `README.md` (install/testing) and `doc/TODO_PROGRESS_LOG.md` (pytest conventions) before changing tests; follow `cropability-rust.mdc` for Rust.
+- Read `README.md` (install/testing) and `doc/progress/2026-06-04.md` (pytest reference) before changing tests; follow `cropability-rust.mdc` for Rust.
+- Append progress to today's `doc/progress/YYYY-MM-DD.md` per `progress-logging.mdc`.

@@ -13,9 +13,9 @@ Write and maintain **all** of the following in **English**:
 - Commit messages and PR descriptions (when contributing)
 - User-facing CLI help strings and log messages in library code
 - `AGENTS.md` and `.cursor/rules/` content
-- `doc/TODO.md` and `doc/TODO_PROGRESS_LOG.md`
+- `doc/PROGRESS_README.md` and `doc/progress/*.md`
 
-Do **not** add documentation README files under `src/test/` or `src/main/`. User docs belong in **`README.md`**; do not add other guides under `doc/`.
+Do **not** add documentation README files under `src/test/` or `src/main/`. User docs belong in **`README.md`**; do not add other guides under `doc/` beyond the progress index and daily log files.
 
 ## Exceptions
 

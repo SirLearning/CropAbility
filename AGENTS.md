@@ -51,7 +51,7 @@ cargo test   # optional
 |---------|----------|----------------|
 | Pytest suite | `src/test/python/` | `scripts/`, `src/test/python/README.md` |
 | Install, dependencies, runtime | `README.md` | Extra guides under `doc/` |
-| Checklist / engineering log | `doc/TODO.md`, `doc/TODO_PROGRESS_LOG.md` | Other files under `doc/` |
+| Progress index / daily log | `doc/PROGRESS_README.md`, `doc/progress/YYYY-MM-DD.md` | Other files under `doc/` |
 | Legacy PGL reference | `archive/legacy/pgl/` | Install tree or `scripts/` |
 
 - All validation → **pytest** in `src/test/python/` (`native`, `gpu`, `slow` markers).
@@ -67,6 +67,7 @@ cargo test   # optional
 | [`.cursor/rules/cropability-rust.mdc`](.cursor/rules/cropability-rust.mdc) | `src/main/rust/**` |
 | [`.cursor/rules/cropability-tests.mdc`](.cursor/rules/cropability-tests.mdc) | `src/test/python/**` |
 | [`.cursor/rules/cropability-docs.mdc`](.cursor/rules/cropability-docs.mdc) | `doc/**` |
+| [`.cursor/rules/progress-logging.mdc`](.cursor/rules/progress-logging.mdc) | Always (logging + `doc/` layout) |
 
 For non-Cursor agents: read every `.mdc` file; the markdown body below each YAML frontmatter block is binding.
 
@@ -88,4 +89,5 @@ For non-Cursor agents: read every `.mdc` file; the markdown body below each YAML
 - **Minimal diffs**; do not refactor `archive/legacy/` unless asked.
 - Do not commit `src/main/resources/private/` or secrets.
 - Do not `git commit` unless the user explicitly asks.
-- New features: GPU → Python; CPU/NGS → Rust + thin `ngs/`; tests → `src/test/python/`; user docs → `README.md`; work log → `doc/TODO_PROGRESS_LOG.md`.
+- New features: GPU → Python; CPU/NGS → Rust + thin `ngs/`; tests → `src/test/python/`; user docs → `README.md`; progress → append today's `doc/progress/YYYY-MM-DD.md` (`progress-logging.mdc`).
+- Task planning is outside the repo; do not recreate `doc/TODO.md`.

@@ -1,0 +1,75 @@
+---
+description: Progress logging and doc/ layout — daily files, index, when and how to append
+alwaysApply: true
+---
+
+# Progress logging
+
+Task planning is **outside the repo** (vault / external tracker). The repo keeps an execution history only.
+
+## `doc/` structure
+
+```text
+doc/
+  PROGRESS_README.md       # index + usage (no session bodies)
+  progress/
+    YYYY-MM-DD.md          # all entries for that calendar day
+```
+
+Do **not** add `doc/TODO.md`, `doc/TODO_PROGRESS_LOG.md`, or other guides under `doc/`.
+
+| Content | Path |
+|---------|------|
+| Install, dependencies, runtime, CLI/API | `README.md` |
+| Progress index | `doc/PROGRESS_README.md` |
+| Daily engineering log | `doc/progress/YYYY-MM-DD.md` |
+| Agent instructions | `AGENTS.md`, `.cursor/rules/` |
+
+Do **not** create `README.md` under `src/test/` or `src/main/python/`.
+
+## When to write
+
+Append to today's `doc/progress/YYYY-MM-DD.md` whenever there is meaningful progress, including:
+
+- Code, migration, config, or rule changes
+- Build, test, smoke, lint, or other validation runs
+- Investigation, diagnosis, or conclusions (even without merged code)
+- Blockers, rollbacks, or failures
+- Decisions or partial steps worth preserving
+
+Update `doc/PROGRESS_README.md` only when starting a new day file.
+
+## Entry format
+
+Each session slice gets one section:
+
+```markdown
+## YYYY-MM-DD — short English title
+
+- Plain-language bullets: what changed, commands run, key numbers
+- Outcome / follow-up when relevant
+```
+
+Rules:
+
+- No `Date:`, `Files Changed:`, or other field labels
+- No task IDs (`M1-*`, `CA-*`, checklist section numbers)
+- Do not overwrite or delete existing entries — append only
+- Follow `english-only.mdc` for all text
+
+## New day file
+
+When creating `doc/progress/YYYY-MM-DD.md`:
+
+1. Start with `# Progress — YYYY-MM-DD`
+2. Add the first `## YYYY-MM-DD — …` section and bullets
+3. Prepend `[[progress/YYYY-MM-DD]]` to the **Recent entries** list in `doc/PROGRESS_README.md`
+4. Keep roughly the last 14 days in that list; drop older links
+
+## User-facing docs
+
+Install, runtime, and CLI changes belong in `README.md`, not new files under `doc/`.
+
+## Pytest reference
+
+Detailed pytest layout and file map live in `doc/progress/2026-06-04.md` (retained reference). Run commands are in `README.md` and `.cursor/rules/cropability-tests.mdc`.

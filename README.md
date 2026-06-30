@@ -301,7 +301,7 @@ pytest --cov=cropability
 
 Tests live only under `src/test/python/` (no `scripts/`).  
 Detailed layout, file map, and conventions for changing tests are recorded in
-[`doc/TODO_PROGRESS_LOG.md`](doc/TODO_PROGRESS_LOG.md) (engineering log).
+[`doc/progress/2026-06-04.md`](doc/progress/2026-06-04.md) (pytest reference in the progress log).
 
 ---
 
@@ -314,8 +314,8 @@ cargo test
 ruff check src/main/python/cropability
 ```
 
-**Project tracking:** [`doc/TODO.md`](doc/TODO.md) (checklist),
-[`doc/TODO_PROGRESS_LOG.md`](doc/TODO_PROGRESS_LOG.md) (dated work log when you change code or close tasks).
+**Engineering progress:** [`doc/PROGRESS_README.md`](doc/PROGRESS_README.md) (index),
+[`doc/progress/`](doc/progress/) (daily log — append on any progress; task planning is outside the repo).
 
 ---
 

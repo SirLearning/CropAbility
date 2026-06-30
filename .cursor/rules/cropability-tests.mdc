@@ -6,7 +6,7 @@ alwaysApply: false
 
 # CropAbility test rules
 
-Run commands: **`README.md`** (Testing). Layout history: **`doc/TODO_PROGRESS_LOG.md`**. Do not add README under `src/test/`.
+Run commands: **`README.md`** (Testing). Layout reference: **`doc/progress/2026-06-04.md`**. Do not add README under `src/test/`.
 
 ## Location
 

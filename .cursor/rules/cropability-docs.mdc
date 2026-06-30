@@ -1,5 +1,5 @@
 ---
-description: Documentation conventions — README for users; doc/ for checklist and log
+description: Documentation conventions — README for users; doc/ for daily progress log
 globs: doc/**/*
 alwaysApply: false
 ---
@@ -11,11 +11,11 @@ alwaysApply: false
 | Content | Path |
 |---------|------|
 | Install, dependencies, runtime, CLI/API usage | **`README.md`** |
-| Execution checklist | **`doc/TODO.md`** |
-| Engineering progress log | **`doc/TODO_PROGRESS_LOG.md`** |
+| Progress index | **`doc/PROGRESS_README.md`** |
+| Daily engineering log | **`doc/progress/YYYY-MM-DD.md`** |
 | Agent instructions | **`AGENTS.md`**, **`.cursor/rules/`** |
 
-**`doc/`** contains only `TODO.md` and `TODO_PROGRESS_LOG.md`. Do not add other guides under `doc/`.
+**`doc/`** holds `PROGRESS_README.md` and `progress/*.md` only. Do not add other guides under `doc/`.
 
 Do **not** create `README.md` or architecture notes under `src/test/` or `src/main/python/`.
 
@@ -35,43 +35,16 @@ Legacy PGL is under `archive/legacy/pgl/` — not the supported API.
 
 ## Progress logging
 
-**When to log:** Add a new entry in `doc/TODO_PROGRESS_LOG.md` whenever you:
+Follow **`progress-logging.mdc`** (always applied):
 
-- Close a checklist item in `doc/TODO.md` (checkbox → `[x]`).
-- Land a significant partial milestone (multi-file feature, behavior change, or blocked follow-up).
-- Change repository code, tests, or validation workflow in a way future readers must reconstruct.
-
-When closing a checkbox in `doc/TODO.md`, add a matching dated entry in `doc/TODO_PROGRESS_LOG.md` (or rely on an existing rollup entry).
+- Append to today's `doc/progress/YYYY-MM-DD.md` on any meaningful progress.
+- Update `doc/PROGRESS_README.md` only when creating a new day file.
+- Do not recreate `doc/TODO.md` or a monolithic progress log.
 
 **User-facing install/run changes** go in `README.md`, not new files under `doc/`.
 
-**Be as detailed as practical.** The log is the durable engineering record for onboarding — prefer one thorough entry over several vague ones.
-
-### Required fields (every entry)
-
-Use the template in `doc/TODO_PROGRESS_LOG.md`. Each field must be **specific**, not placeholder text:
-
-| Field | What to include |
-|-------|-----------------|
-| **Date** | ISO date (`YYYY-MM-DD`); add a second date if work spanned days. |
-| **Title** | Same English title as the matching line in `doc/TODO.md` when applicable. |
-| **Scope** | What problem was solved, acceptance criteria, and what was explicitly **out of scope**. |
-| **Files Changed** | Concrete paths (not “various”); group by area (`src/main/rust/…`, `src/test/python/…`, `README.md`, …). |
-| **Validation Steps** | Exact commands run (`pytest …`, `cargo test`, `maturin develop …`, CLI invocations) and **pass/fail** outcome. |
-| **Outcome** | What now works differently; user-visible behavior; README sections updated. |
-| **Risks/Follow-ups** | Open items, known gaps, or related unchecked checklist lines. |
-
-### Strongly recommended (include when applicable)
-
-- **Commits / PRs:** Short hash(es) or PR URL(s).
-- **Design decisions:** Why this approach and alternatives rejected.
-- **API / CLI surface:** New or changed public functions, PyO3 exports, subcommands, flags.
-- **Test coverage:** New or updated test modules and markers (`native`, `gpu`, `slow`).
-- **Checklist:** Whether `doc/TODO.md` checkbox and log entry were updated in the same change.
-
-### Anti-patterns (do not do)
+### Anti-patterns
 
 - One-line log entries without paths, commands, or outcome.
-- New `doc/*.md` guides (use `README.md` or the progress log).
-- Closing a checkbox without a matching log entry when repo work was done.
+- New `doc/*.md` guides (use `README.md` or the daily progress file).
 - Duplicating the entire diff — summarize **what** changed and **why**.
